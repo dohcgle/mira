@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+/* Bu yerga yozsak, Tailwind uni hamma joyda taniy oladi */
+.input-field {
+  @apply mt-1 block w-full border border-slate-200 rounded-xl p-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all bg-slate-50;
+}

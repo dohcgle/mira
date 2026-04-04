@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  # 1. Ma'lumotlar bazasi (PostgreSQL)
+  db:
+    image: postgres:15-alpine
+    container_name: mira-db
+    restart: always
+    environment:
+      POSTGRES_DB: mira_db
+      POSTGRES_USER: mira_user
+      POSTGRES_PASSWORD: mira_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - mira-network
+
+  # 2. Proksi (Nginx)
+  nginx:
+    build:
+      context: ./nginx
+    container_name: mira-proxy
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+    restart: always
+    volumes:
+      - static_volume:/app/staticfiles
+    networks:
+      - mira-network
+
+  # 3. Frontend (Vue 3)
+  frontend:
+    build:
+      context: ./frontend
+    container_name: mira-frontend
+    expose:
+      - "80"
+    restart: always
+    networks:
+      - mira-network
+
+  # 4. Backend (Django DRF)
+  backend:
+    build:
+      context: ./backend
+    container_name: mira-backend
+    expose:
+      - "8000"
+    restart: always
+    environment:
+      - DB_NAME=mira_db
+      - DB_USER=mira_user
+      - DB_PASSWORD=mira_password
+      - DB_HOST=db
+      - DB_PORT=5432
+    volumes:
+      - ./backend:/app
+      - static_volume:/app/staticfiles
+    depends_on:
+      - db
+    networks:
+      - mira-network
+
+networks:
+  mira-network:
+    driver: bridge
+
+volumes:
+  static_volume:
+  postgres_data:
