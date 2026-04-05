@@ -9,13 +9,11 @@
         @page {
             size: A4;
             margin: 0.5cm 1cm;
-            /* Marginlarni kamaytirdik */
         }
 
         body {
             font-family: "Times New Roman", Times, serif;
             font-size: 9pt;
-            /* Fontni kichiklashtirdik */
             line-height: 1.1;
             text-align: justify;
         }
@@ -39,7 +37,6 @@
             border-collapse: collapse;
             font-family: "Times New Roman", Times, serif;
             font-size: 8pt;
-            /* Jadval ichidagi font yanada kichikroq */
             margin-bottom: 10px;
         }
 
@@ -47,7 +44,6 @@
         .schedule-table td {
             border: 1px solid #000;
             padding: 2px 4px;
-            /* Paddinglarni kamaytirdik */
             text-align: right;
         }
 
@@ -93,10 +89,14 @@
             background-color: #f0f0f0;
         }
 
-        /* Django template o'zgaruvchilari uchun rang */
         .var {
-            color: #900000;
+            color: #8B0000; /* To'q qizil */
             font-weight: bold;
+        }
+
+        .qr-code {
+            width: 2cm;
+            height: 2cm;
         }
     </style>
 </head>
@@ -104,8 +104,8 @@
 <body>
 
     <div class="header">
-        <span class="var">{{ loan.details.shartnoma_sanasi|date:"d.m.Y" }}</span> y.dagi
-        № <span class="var">{{ loan.details.shartnoma_raqami }}</span>- mikroqarz shartnomasiga 1-sonli ilova
+        <span class="var">{{ loan_details.shartnoma_sana }}</span> y.dagi
+        № <span class="var">{{ loan_details.shartnoma_raqami }}</span>- mikroqarz shartnomasiga 1-sonli ilova
     </div>
 
     <h3>TO‘LOV JADVALI</h3>
@@ -123,7 +123,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for item in schedule %}
+            {% for item in schedule_list %}
             <tr>
                 <td class="text-center">{{ item.num }}</td>
                 <td class="text-center">{{ item.date }}</td>
@@ -135,9 +135,9 @@
             {% endfor %}
             <tr style="font-weight: bold; background-color: #e0e0e0;">
                 <td colspan="3" style="text-align: right; font-weight: bold;">JAMI:</td>
-                <td>{{ total_principal }}</td>
-                <td>{{ total_interest }}</td>
-                <td>{{ grand_total }}</td>
+                <td>{{ loan_details.total_principal }}</td>
+                <td>{{ loan_details.total_interest }}</td>
+                <td>{{ loan_details.grand_total }}</td>
             </tr>
         </tbody>
     </table>
@@ -158,45 +158,44 @@
         <tbody>
             <tr>
                 <td style="text-align: left;">
-                    <strong>«PULLOL BUSINESS MIKROMOLIYA TASHKILOTI» MChJ</strong><br>
+                    <strong><span class="var">{{ administrative.tashkilot_nomi }}</span></strong><br>
                     Manzil: Toshkent shahri, Yakkasaroy tumani, Rakat ko‘chasi, 10-uy, 18-xonadon<br>
                     h/r: 20208000405643889001<br>
                     MFO: 01088, ATB “Kapitalbank” Markaziy amaliyotlar bo‘limi<br>
                     STIR: 310430149<br>
                     Tel: (55) 510 02 16, (97) 714 14 17, (97) 706 96 65<br><br>
-                    <strong><span class="var">{{ loan.financial_info.filial_nomi }}</span> boshlig‘i</strong><br><br>
+                    <strong><span class="var">{{ administrative.filial }}</span> boshlig‘i</strong><br><br>
 
                     <div style="display: flex; align-items: center;">
                         <div style="width: 80px;">
                             {% if qr_manager %}
-                            <img src="{{ qr_manager }}" alt="QR" style="width: 2cm; height: 2cm;">
+                            <img src="{{ qr_manager }}" class="qr-code">
                             {% endif %}
                         </div>
                         <div>
-                            <strong><span class="var">{{ loan.financial_info.filial_boshligi }}</span></strong>
+                            <strong><span class="var">{{ administrative.filial_fish_inisiali }}</span></strong>
                         </div>
                     </div>
                 </td>
                 <td style="text-align: left;">
-                     <strong><span class="var">{{ loan.client.fish }}</span></strong><br>
-                    Manzil: <span class="var">{{ loan.client.manzil }}</span><br>
-                    Pasport: <span class="var">{{ loan.client.pasport_seriya }}</span>,
-                    <span class="var">{{ loan.client.pasport_berilgan }}</span> tomonidan berilgan.<br>
+                    <strong><span class="var">{{ client_info.fish }}</span></strong><br>
+                    Manzil: <span class="var">{{ client_info.pasport_berilgan_joy }}</span><br>
+                    Pasport: <span class="var">{{ client_info.pasport }}</span>,
+                    <span class="var">{{ client_info.pasport_berilgan_joy }}</span> tomonidan berilgan.<br>
 
                     <span class="var">Tel:</span>
-                    {% if loan.client.telefon %}
-                    <span class="var">{{ loan.client.telefon }}</span>
-                    {% endif %}<br>
+                    <span class="var">{{ client_info.telefon }}</span><br>
 
-                    {% for contact in loan.client.contact_persons %}
-                    <span class="var">{{ contact.get_qarindoshlik_display }}</span>:
-                    <span class="var">{{ contact.fish }}</span> <span class="var">{{ contact.telefon }}</span><br>
+                    {% for contact in client_info.contacts %}
+                    <span class="var">{{ contact.qarindoshlik }}:</span>
+                    <span class="var">{{ contact.telefon }}</span> 
+                    <br>
                     {% endfor %}
                     <br>
                     <div style="height: 30px; border-bottom: 1px solid black; margin-bottom: 5px;"></div>
                     <div style="text-align: center;">(Imzo)</div>
                     <div style="text-align: center; margin-top: 5px;">
-                        <strong><span class="var">{{ loan.client.fish }}</span></strong>
+                        <strong><span class="var">{{ client_info.fish }}</span></strong>
                     </div>
                 </td>
             </tr>

@@ -1,7 +1,10 @@
 from django.urls import path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework_simplejwt.views import TokenRefreshView
-from .views import LoanApplicationAPIView, test_api, MyTokenObtainPairView, GeneratePDFView, LoanStatusUpdateView, LoanDocumentHTMLView, RetrieveLoanAPIView
+from .views import (
+    LoanApplicationAPIView, test_api, MyTokenObtainPairView, GeneratePDFView, 
+    LoanStatusUpdateView, LoanDocumentHTMLView, RetrieveLoanAPIView, UserProfileView
+)
 
 urlpatterns = [
     # Auth yo'llari
@@ -14,6 +17,7 @@ urlpatterns = [
     path('loans/<int:loan_id>/status/', LoanStatusUpdateView.as_view(), name='loan-status-update'),
     path('loans/<int:loan_id>/doc/<str:template_name>/', LoanDocumentHTMLView.as_view(), name='loan-doc-html'),
     path('loans/<int:loan_id>/pdf/<str:template_name>/', GeneratePDFView.as_view(), name='generate-pdf'),
+    path('profile/', UserProfileView.as_view(), name='profile-api'),
     path('test/', test_api),
 
     # Dokumentatsiya (Swagger)

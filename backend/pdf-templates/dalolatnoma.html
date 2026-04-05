@@ -130,39 +130,39 @@
 
     <div class="doc-number">
         <div>Toshkent shahri</div>
-        <div>Sana: <span class="var">{{ loan.details.shartnoma_sanasi|date:"d.m.Y"|default:"______________" }}</span> y.
+        <div>Sana: <span class="var">{{ loan_details.shartnoma_sana|default:"______________" }}</span> y.
         </div>
     </div>
 
-    {% if garov_boshqa_shaxs %}
+    {% if collateral.garov_egasi != 'self' %}
     <p>
         «PULLOL BUSINESS MIKROMOLIYA TASHKILOTI» MChJning (1-tomon) vakili bo‘lgan
-        <span class="var">{{ loan.financial_info.filial_nomi }}</span>
-        boshlig‘i <strong><span class="var">{{ loan.financial_info.filial_boshligi }}</span></strong>,
-        O‘zbekiston Respublikasi fuqarosi <strong><span class="var">{{ loan.client.fish }}</span>
+        <span class="var">{{ administrative.filial }}</span>
+        filiali rahbari <strong><span class="var">{{ administrative.filial_fish }}</span></strong>,
+        O‘zbekiston Respublikasi fuqarosi <strong><span class="var">{{ client_info.fish }}</span>
         </strong>
         (2-tomon) va
         garovga beruvchi O‘zbekiston Respublikasi fuqarosi
-        <strong><span class="var">{{ collateral.owner_client.fish }}</span></strong> (3-tomon)
+        <strong><span class="var">{{ collateral.owner.fish }}</span></strong> (3-tomon)
         o‘rtalarida,
-        <span class="var">{{ loan.details.shartnoma_sanasi|date:"d.m.Y" }}</span> yildagi
-        № <span class="var">{{ loan.details.shartnoma_raqami }}</span>-sonli Mikroqarz shartnomasiga muvofiq
+        <span class="var">{{ loan_details.shartnoma_sana }}</span> yildagi
+        № <span class="var">{{ loan_details.shartnoma_raqami }}</span>-sonli Mikroqarz shartnomasiga muvofiq
         1-tomon 2-tomonga berilgan mikroqarz bo‘yicha ta’minot sifatida taqdim etilgan,
         3-tomonga mulk huquqi asosida tegishli bo‘lgan mulkning garov qiymatini kelishish muzokaralari o‘tkazildi.
     </p>
     {% else %}
     <p>
         «PULLOL BUSINESS MIKROMOLIYA TASHKILOTI» MChJning (1-tomon) vakili bo‘lgan
-        <span class="var">{{ loan.financial_info.filial_nomi }}</span>
-        boshlig‘i <strong><span class="var">{{ loan.financial_info.filial_boshligi }}</span></strong>,
+        <span class="var">{{ administrative.filial }}</span>
+        filiali rahbari <strong><span class="var">{{ administrative.filial_fish }}</span></strong>,
         O‘zbekiston Respublikasi fuqarosi va garovga beruvchi <strong>
             <span class="var">
-                {{ loan.client.fish }}
+                {{ client_info.fish }}
             </span>
         </strong>
         (2-tomon) o‘rtalarida,
-        <span class="var">{{ loan.details.shartnoma_sanasi|date:"d.m.Y" }}</span> yildan
-        № <span class="var">{{ loan.details.shartnoma_raqami }}</span>-sonli Mikroqarz shartnomasiga muvofiq
+        <span class="var">{{ loan_details.shartnoma_sana }}</span> yildan
+        № <span class="var">{{ loan_details.shartnoma_raqami }}</span>-sonli Mikroqarz shartnomasiga muvofiq
         1-tomon 2-tomonga berilgan mikroqarz bo‘yicha ta’minot sifatida taqdim etilgan,
         2-tomonga mulk huquqi asosida tegishli bo‘lgan mulkning garov qiymatini kelishish muzokaralari o‘tkazildi.
     </p>
@@ -210,15 +210,15 @@
     <div style="font-size: 10pt; margin-left: 1cm;">
         -* avtotransport egasi:
         <span class="var">
-            {% if garov_boshqa_shaxs %}
-            {{ collateral.owner_client.fish }}
+            {% if collateral.garov_egasi != 'self' %}
+            {{ collateral.owner.fish }}
             {% else %}
-            {{ loan.client.fish }}
+            {{ client_info.fish }}
             {% endif %}
         </span><br>
-        -* texnik pasport: <span class="var">{{ avto.texpasport }}</span><br>
-        -* ro‘yxatdan o‘tgan manzili/garaj manzili: <span class="var">{{ avto.manzil }}</span><br>
-        -* davlat raqami: <span class="var">{{ avto.davlat_raqami }}</span>
+        -* texnik pasport: <span class="var">{{ collateral.avto.texpasport }}</span><br>
+        -* ro‘yxatdan o‘tgan manzili/garaj manzili: <span class="var">{{ collateral.avto.manzil }}</span><br>
+        -* davlat raqami: <span class="var">{{ collateral.avto.davlat_raqami }}</span>
     </div>
 
     <p>
@@ -226,14 +226,15 @@
         tafsilotlarga
         ega bo‘lgan garov predmetini taqdim etadi,
         1-tomon esa ushbu garov predmetini
-        <strong><span class="var">{{ avto.bahosi|intcomma }}</span>
-            (<span class="var">{{ avto.bahosi_soz }}</span>) so‘m</strong> bo‘lgan kelishilgan garov
+        <strong><span class="var">{{ collateral.avto.bahosi|intcomma }}</span>
+            (<span class="var">{{ collateral.avto.bahosi_soz }}</span>) so‘m</strong> bo‘lgan kelishilgan garov
         qiymatida qabul qiladi.
     </p>
     {% endif %}
-    {% if is_kochmas %}
+    {% if "mulk" in collateral.types %}
     <p>
-        Garov predmeti sifatida <span class="var">{{ mulk.nomi }}</span>, {% if garov_boshqa_shaxs %}3-tomonga{% else
+        Garov predmeti sifatida <span class="var">{{ collateral.mulk.nomi }}</span>, {% if collateral.garov_egasi !=
+        'self' %}3-tomonga{% else
         %}2-tomonga{% endif %} egalik huquqi tegishli bo'lgan, quyidagi tafsilotlarga ega ko'chmas mulk taqdim etiladi:
     </p>
 
@@ -245,58 +246,85 @@
                 <th>Qurilish osti maydoni (m2)</th>
                 <th>Umumiy foydali maydoni (m2)</th>
                 <th>Yashash maydoni (m2)</th>
-                <th>Kelishilgan garov qiymati, so‘m</th>
+
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td><span class="var">{{ mulk.nomi }}</span></td>
-                <td><span class="var">{{ mulk.yer_maydon|default:"—" }}</span></td>
-                <td><span class="var">{{ mulk.qurilish_maydon|default:"—" }}</span></td>
-                <td><span class="var">{{ mulk.umumiy_maydon|default:"—" }}</span></td>
-                <td><span class="var">{{ mulk.yashash_maydon|default:"—" }}</span></td>
-                <td><span class="var">{{ mulk.bahosi|intcomma }} <br>({{ mulk.bahosi_soz }})</span></td>
+                <td><span class="var">{{ collateral.mulk.nomi }}</span></td>
+                <td><span class="var">{{ collateral.mulk.umumiy_yer_maydoni|default:"—" }}</span></td>
+                <td><span class="var">{{ collateral.mulk.qurilish_osti_maydoni|default:"—" }}</span></td>
+                <td><span class="var">{{ collateral.mulk.umumiy_foydali_maydoni|default:"—" }}</span></td>
+                <td><span class="var">{{ collateral.mulk.yashash_maydoni|default:"—" }}</span></td>
             </tr>
         </tbody>
     </table>
 
     <div style="font-size: 9pt; margin-left: 1.5cm; margin-bottom: 10px;">
-        -* ko‘chmas mulk egasi: <span class="var">{{ collateral.owner_client.fish }}</span><br>
-        -* reestr raqami: <span class="var">{{ mulk.reestr_raqami|default:collateral.reestr_number }}</span><br>
-        -* kadastr raqami: <span class="var">{{ mulk.kadastr_raqami }}</span><br>
-        -* manzil: <span class="var">{{ mulk.manzil }}</span><br>
-        -* umumiy maydoni: <span class="var">{{ mulk.umumiy_maydon }}</span> kv.m
+        -* ko‘chmas mulk egasi: <span class="var">
+            {% if collateral.garov_egasi != 'self' %}
+            {{ collateral.owner.fish }}
+            {% else %}
+            {{ client_info.fish }}
+            {% endif %}
+        </span><br>
+        -* reestr raqami: <span class="var">{{ collateral.mulk.reestr_raqami|default:"—" }}</span><br>
+        -* kadastr raqami: <span class="var">{{ collateral.mulk.kadastr_raqami }}</span><br>
+        -* manzil: <span class="var">{{ collateral.mulk.manzili }}</span><br>
+        -* umumiy maydoni: <span class="var">{{ collateral.mulk.umumiy_foydali_maydoni }}</span> kv.m
     </div>
 
     <p>
-        Tomonlar ushbu garov predmetini <strong>
-            <span class="var">
-                {{ mulk.bahosi|intcomma }}</span> (<span class="var">{{ mulk.bahosi_soz }}</span>)
-            so‘m</strong> bo‘lgan kelishilgan garov qiymatida qabul qiladi.
+        Tomonlar o’rtasida o’tkazilgan muzokaralar natijalariga ko‘ra, 2-tomon ta’minot sifatida quyidagi tafsilotlarga ega bo’lgan garov predmetini taqdim
+        etadi, 1-tomon esa ushbu garov predmetini <span class="var">{{ loan_details.shartnoma_sana }}</span> y.dan 
+        <span class="var">№{{ loan_details.shartnoma_raqami }}</span> Mikrokredit shartnomasi bo‘yicha berilgan Mikroqarz bo‘yicha 
+        <span class="var">{{ collateral.mulk.bahosi|intcomma }}</span> (<span class="var">{{ collateral.mulk.bahosi_soz }}</span>) so’m bo‘lgan kelishilgan garov qiymatida qabul qiladi:
     </p>
-    {% endif %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nomi</th>
+                <th>Umumiy yer maydoni (m2)</th>
+                <th>Qurilish osti maydoni (m2)</th>
+                <th>Umumiy foydali maydoni (m2)</th>
+                <th>Yashash maydoni (m2)</th>
+                <th>Kelishilgan garov qiymati, so'm</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><span class="var">{{ collateral.mulk.nomi }}</span></td>
+                <td><span class="var">{{ collateral.mulk.umumiy_yer_maydoni }}</span></td>
+                <td><span class="var">{{ collateral.mulk.qurilish_osti_maydoni }}</span></td>
+                <td><span class="var">{{ collateral.mulk.umumiy_foydali_maydoni }}</span></td>
+                <td><span class="var">{{ collateral.mulk.yashash_maydoni }}</span></td>
+                <td><span class="var">{{ collateral.mulk.bahosi|intcomma }}</span><br>
+                    (<span class="var">{{ collateral.mulk.bahosi_soz }}</span>)</td>
+            </tr>
+        </tbody>
+    </table>
 
     <p>
-        Shunday qilib, garov predmetining kelishilgan garov qiymati
-        <strong>
-            {% if is_avto %}
-            <span class="var">{{ avto.bahosi|intcomma }}</span> so‘m {% if is_kochmas %}va{% endif %}
-            {% endif %}
-            {% if is_kochmas %}
-            <span class="var">{{ mulk.bahosi|intcomma }}</span> so‘m
-            {% endif %}
-        </strong>
-        tashkil etadi.
-    </p>
+        Shu bilan birga, garov predmetining kelishilgan garov qiymati deganda ushbu mulk garov sifatida taqdim etilgan/qabul qilingan qiymati tushuniladi.
+        Shunday qilib, garov predmetining kelishilgan garov qiymati 
+        <span class="var">{{ collateral.mulk.bahosi|intcomma }}</span> (<span class="var">{{ collateral.mulk.bahosi_soz }}</span>) so‘mni tashkil etadi.
+    </p>   
+
+
+
+
+
+
+
 
     <table class="footer-table">
         <!-- 1-TOMON: DIREKTOR YOKI FILIAL BOSHILIGI -->
-        {% if loan.financial_info.filial_nomi %}
         <tr>
             <td style="width: 35%; font-weight: bold;">
                 1-tomon:<br>
                 «PULLOL BUSINESS MIKROMOLIYA TASHKILOTI» MChJ <br>
-                <span class="var">{{ loan.financial_info.filial_nomi }}</span> boshlig‘i
+                <span class="var">{{ administrative.filial }}</span> filiali rahbari
             </td>
             <td style="width: 30%; text-align: center;">
                 {% if qr_manager %}
@@ -304,27 +332,11 @@
                 {% endif %}
             </td>
             <td style="width: 35%; text-align: right; font-weight: bold;">
-                <span class="var">{{ loan.financial_info.filial_boshligi }}</span>
+                <span class="var">{{ administrative.filial_fish_inisiali }}</span>
             </td>
         </tr>
-        {% else %}
-        <tr>
-            <td style="width: 35%; font-weight: bold;">
-                1-tomon:<br>
-                «PULLOL BUSINESS MIKROMOLIYA TASHKILOTI» MChJ direktori
-            </td>
-            <td style="width: 30%; text-align: center;">
-                {% if qr_obidov %}
-                <img src="{{ qr_obidov }}" class="qr-code-small">
-                {% endif %}
-            </td>
-            <td style="width: 35%; text-align: right; font-weight: bold;">
-                <span class="var">{{ loan.financial_info.direktor_fish_inisiali }}</span>
-            </td>
-        </tr>
-        {% endif %}
 
-        <!-- 3-TOMON: QARZ OLUVCHI -->
+        <!-- 2-TOMON: QARZ OLUVCHI -->
         <tr>
             <td style="font-weight: bold;">
                 2-tomon:<br>
@@ -336,12 +348,12 @@
                 <div style="font-size: 8pt;">(Imzo)</div>
             </td>
             <td style="text-align: right; font-weight: bold;">
-                <span class="var">{{ loan.client.fish }}</span>
+                <span class="var">{{ client_info.fish }}</span>
             </td>
         </tr>
 
         <!-- 3-TOMON: GAROVGA BERUVCHI (AGAR BO'LSA) -->
-        {% if garov_boshqa_shaxs %}
+        {% if collateral.garov_egasi != 'self' %}
         <tr>
             <td style="font-weight: bold;">
                 3-tomon:<br>
@@ -353,7 +365,7 @@
                 <div style="font-size: 8pt;">(Imzo)</div>
             </td>
             <td style="text-align: right; font-weight: bold;">
-                <span class="var">{{ collateral.owner_client.fish }}</span>
+                <span class="var">{{ collateral.owner.fish }}</span>
             </td>
         </tr>
         {% endif %}

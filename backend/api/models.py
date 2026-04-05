@@ -3,11 +3,19 @@ from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    fish = models.CharField(max_length=100, null=True, blank=True)
-    fish_inisiali = models.CharField(max_length=100, null=True, blank=True)
     filial = models.CharField(max_length=100, null=True, blank=True)
+    filial_fish = models.CharField(max_length=100, null=True, blank=True)
+    filial_fish_inisiali = models.CharField(max_length=100, null=True, blank=True)
+    tashkilot_nomi = models.CharField(max_length=100, null=True, blank=True)
+    tashkilot_direktor_fish = models.CharField(max_length=100, null=True, blank=True)
+    tashkilot_direktor_fish_inisiali = models.CharField(max_length=100, null=True, blank=True)
+    
     def __str__(self):
         return f"{self.user.username}"
+
+    @property
+    def fish(self):
+        return self.filial_fish
 
 from django.db.models.signals import post_save
 from django.dispatch import receiver

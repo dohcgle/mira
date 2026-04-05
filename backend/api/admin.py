@@ -3,8 +3,8 @@ from .models import UserProfile, LoanApplication
 
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'fish', 'filial')
-    search_fields = ('user__username', 'fish', 'filial')
+    list_display = ('id', 'user', 'filial_fish')
+    search_fields = ('user__username', 'filial_fish')
 
 @admin.register(LoanApplication)
 class LoanApplicationAdmin(admin.ModelAdmin):

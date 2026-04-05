@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch } from 'vue' // 'computed' va 'watch'ni qo'shdik
+import { ref, computed, watch, onMounted } from 'vue' // 'onMounted' qo'shildi
 import { useRouter } from 'vue-router'
 import { vMaska } from "maska/vue" // Oxiriga /vue qo'shildi
 import { authStore } from '../store/auth'
@@ -49,7 +49,8 @@ const formData = ref({
         kredit_muddati: 36, 
         kredit_muddati_soz: '', 
         oylik_tolov: 1700000, 
-        oylik_tolov_soz: ''
+        oylik_tolov_soz: '',
+        grafik_matni:''
     },
 
     financial: {
@@ -71,7 +72,6 @@ const formData = ref({
         xarajat_jami_soz: '',
         majburiyatlar: '',
     },
-
     collateral: {
         garov_egasi: 'self',
         avto: {
@@ -128,7 +128,16 @@ const formData = ref({
             notarius_berilgan_sana: ''
         },
         types: [], // Tanlangan garov turlari (massiv)
-    }
+        
+    },
+    administrative:{
+            filial: '',
+            filial_fish: '',
+            filial_fish_inisiali: '',
+            tashkilot_nomi: '',
+            tashkilot_direktor_fish: '',
+            tashkilot_direktor_fish_inisiali: ''            
+        }
     // ... qolganlari
 })
 
@@ -139,7 +148,7 @@ const isStepValid = computed(() => {
         return formData.value.client_info.fish.length > 5 && formData.value.client_info.pasport.length >= 7
     }
     if (currentStep.value === 2) {
-        return formData.value.loan_details.summa > 0
+        return formData.value.loan_details.kredit_summasi > 0
     }
     return true
 })
@@ -310,6 +319,21 @@ watch([() => formData.value.collateral.garov_egasi, () => formData.value.client_
         });
     }
 }, { deep: true, immediate: true });
+
+// Backenddan UserProfile ma'lumotlarini olish va administrative qismiga yuklash
+onMounted(async () => {
+    try {
+        const response = await api.get('/profile/')
+        if (response.data) {
+            formData.value.administrative = {
+                ...formData.value.administrative,
+                ...response.data
+            };
+        }
+    } catch (err) {
+        console.error('Profil ma\'lumotlarini yuklashda xatolik:', err);
+    }
+});
 
 </script>
 
@@ -987,10 +1011,10 @@ watch([() => formData.value.collateral.garov_egasi, () => formData.value.client_
                                 @input="formData.collateral.owner.pasport_berilgan_joy = $event.target.value.toUpperCase()"
                                 type="text" class="input-field">
                         </div>
-                        </div>
+                    </div>
                 </div>
 
-                <!-- Bosh ishonchnoma -->
+                                         <!-- Bosh ishonchnoma -->
                 <div v-if="formData.collateral.garov_egasi === 'ishonchnoma'" 
                     class="fade-in space-y-6 pt-6 border-t border-slate-100 mt-12">
                     <h3 class="text-xl font-bold text-slate-700 flex items-center gap-2">📜 Bosh ishonchnoma ma'lumotlari</h3>
@@ -1020,6 +1044,25 @@ watch([() => formData.value.collateral.garov_egasi, () => formData.value.client_
                         </div>
                     </div>
                  </div>
+
+                <!-- Administrative ma'lumotlar (DB UserProfile dan keladi) -->
+                <div class="fade-in space-y-6 pt-6 border-t border-slate-100 mt-12 bg-slate-50 p-6 rounded-2xl">
+                    <h3 class="text-xl font-bold text-slate-700 flex items-center gap-2">🏢 Ma'muriy ma'lumotlar (Avtomatik yuklangan)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-600 mb-1">Filial</label>
+                            <input v-model="formData.administrative.filial" type="text" class="input-field bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-600 mb-1">Mas'ul xodim (F.I.Sh.)</label>
+                            <input v-model="formData.administrative.filial_fish" type="text" class="input-field bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-600 mb-1">Tashkilot nomi</label>
+                            <input v-model="formData.administrative.tashkilot_nomi" type="text" class="input-field bg-white">
+                        </div>
+                    </div>
+                </div>
             </div>
 
 
@@ -1056,7 +1099,7 @@ watch([() => formData.value.collateral.garov_egasi, () => formData.value.client_
         </div>
         <!-- JSON ko'rinishi -->
         <pre
-            class="text-emerald-400 font-mono text-sm overflow-x-auto leading-relaxed whitespace-pre-wrap break-all">{{ formData }}</pre>
+            class="text-emerald-400 font-mono text-sm overflow-x-auto leading-relaxed whitespace-pre-wrap break-all">{{ JSON.stringify(formData, null, 2) }}</pre>
     </div>
 
 </template>

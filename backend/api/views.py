@@ -3,9 +3,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
+from django.http import HttpResponse # MUHIM: PDF response qaytarish uchun
+from django.template.loader import render_to_string # MUHIM: HTML shablon o'qish uchun
+from weasyprint import HTML # MUHIM: PDF generatsiya uchun
 from django.contrib.auth.models import User
-from .models import LoanApplication
-from .serializers import LoanApplicationSerializer, MyTokenObtainPairSerializer
+from .models import LoanApplication, UserProfile
+from .serializers import LoanApplicationSerializer, MyTokenObtainPairSerializer, UserProfileSerializer
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
@@ -20,6 +23,14 @@ class MyTokenObtainPairView(TokenObtainPairView):
             response.data['username'] = user.username
         return response
 
+class UserProfileView(APIView):
+    def get(self, request):
+        profile = getattr(request.user, 'profile', None)
+        if not profile:
+            profile, created = UserProfile.objects.get_or_create(user=request.user)
+        serializer = UserProfileSerializer(profile)
+        return Response(serializer.data)
+
 class LoanApplicationAPIView(APIView):
     # Barcha guruhlar barcha arizalarni ko'radi
     def get(self, request):
@@ -33,7 +44,7 @@ class LoanApplicationAPIView(APIView):
         if serializer.is_valid():
             profile = getattr(request.user, 'profile', None)
             branch = profile.filial if profile else "No Branch"
-            operator_name = profile.fish if profile else request.user.username
+            operator_name = profile.filial_fish if profile else request.user.username
             serializer.save(
                 created_by=request.user,
                 updated_by=request.user,
@@ -108,52 +119,64 @@ def generate_qr_base64(url: str) -> str:
     return f"data:image/png;base64,{encoded}"
 
 
-def build_loan_context(data):
-    """LoanWizard JSON → Shablon context (umumiy funksiya)"""
-    collateral = data.get('collateral') or {}
-    # 'types' ni list yoki dict shaklida qabul qilamiz
-    col_types = collateral.get('types', {}) if isinstance(collateral, dict) else {}
+def build_loan_context(data, loan_obj=None):
+    """LoanWizard JSON ma'lumotlarini RAW holatda contextga yuklash va grafikni tahlil qilish"""
+    context = data.copy()
+    
+    # created_at ni alohida qo'shib qo'yamiz
+    if loan_obj:
+        context['created_at'] = loan_obj.created_at
 
-    if isinstance(col_types, list):
-        is_avto        = 'avto' in col_types
-        is_kochmas     = 'mulk' in col_types
-        is_sugurta     = 'sugurta' in col_types
-    elif isinstance(col_types, dict):
-        is_avto        = bool(col_types.get('avto', False))
-        is_kochmas     = bool(col_types.get('mulk', False))
-        is_sugurta     = bool(col_types.get('sugurta', False))
-    else:
-        is_avto = is_kochmas = is_sugurta = False
+    # Grafik matnini (textarea'dan kelgan) tahlil qilish (Parser)
+    loan_details = context.get('loan_details', {})
+    grafik_matni = loan_details.get('grafik_matni', '')
+    schedule_data = []
 
-    avto    = collateral.get('avto', {})    if isinstance(collateral, dict) else {}
-    mulk    = collateral.get('mulk', {})    if isinstance(collateral, dict) else {}
-    sugurta = collateral.get('sugurta', {}) if isinstance(collateral, dict) else {}
+    if grafik_matni:
+        import re
+        lines = grafik_matni.strip().split('\n')
+        for line in lines:
+            line_str = line.strip()
+            if not line_str: continue
+            
+            # Agar qator "JAMI" yoki "Jami" bilan boshlansa
+            if "JAMI" in line_str.upper():
+                parts = re.split(r'\t+|\s{2,}', line_str)
+                # Jami qatorida odatda: [JAMI, balance, principal, interest, total]
+                # Yoki boshqa format bo'lsa, sonlarni qidiramiz
+                nums = [p for p in parts if re.search(r'\d', p)]
+                if len(nums) >= 3:
+                    loan_details['total_principal'] = nums[-3]
+                    loan_details['total_interest'] = nums[-2]
+                    loan_details['grand_total'] = nums[-1]
+                continue
 
-    return {
-        'loan': {
-            'client': data.get('client_info', {}),
-            'details': {
-                'shartnoma_raqami': data.get('loan_details', {}).get('shartnoma_raqami'),
-                'shartnoma_sanasi': data.get('loan_details', {}).get('shartnoma_sana'),
-                'miqdori':     data.get('loan_details', {}).get('kredit_summasi'),
-                'miqdori_soz': data.get('loan_details', {}).get('kredit_summasi_soz'),
-                'muddat_oy':   data.get('loan_details', {}).get('kredit_muddati'),
-                'foiz':        data.get('loan_details', {}).get('foiz_stavkasi'),
-                'foiz_soz':    data.get('loan_details', {}).get('foiz_stavkasi_soz'),
-            },
-            'financial_info': data.get('financial', {})
-        },
-        'avto':              avto,
-        'mulk':              mulk,
-        'sugurta':           sugurta,
-        'is_avto':           is_avto,
-        'is_kochmas':        is_kochmas,
-        'is_sugurta_mavjud': is_sugurta,
-        # collateral egasi uchun (shablon {{ collateral.owner_client.fish }} ishlatadi)
-        'collateral': {
-            'owner_client': data.get('client_info', {}),
-        }
-    }
+            # Tablar yoki 2+ bo'shliqlar bo'yicha bo'lish (Excel dan nusxalanganda tab bo'ladi)
+            parts = re.split(r'\t+|\s{2,}', line_str)
+            # Kamida 5-6 ustun bo'lsa (№, Sana, Qoldiq, Asosiy, Foiz, Jami)
+            if len(parts) >= 6:
+                # Agar barcha asosiy qiymatlar bo'sh, 0 yoki '-' bo'lsa, qatorni chetlab o'tamiz
+                vals = [p.strip().replace(' ', '').replace(',', '.') for p in parts[2:6]]
+                
+                def is_val_empty(v):
+                    # Tozalangan qiymatni tekshirish
+                    v_clean = v.replace('-', '').replace('0.00', '').replace('0', '').strip()
+                    return not v_clean or v == '-' or v == '-0.00'
+
+                is_all_zero = all(is_val_empty(v) for v in vals)
+                
+                if not is_all_zero:
+                    schedule_data.append({
+                        'num': parts[0],
+                        'date': parts[1],
+                        'balance': parts[2],
+                        'principal': parts[3],
+                        'interest': parts[4],
+                        'total': parts[5]
+                    })
+    
+    context['schedule_list'] = schedule_data
+    return context
 
 
 class LoanDocumentHTMLView(View):
@@ -164,7 +187,7 @@ class LoanDocumentHTMLView(View):
         except LoanApplication.DoesNotExist:
             return HttpResponse('<h2 style="font-family:sans-serif;color:red">Ariza topilmadi</h2>', status=404)
 
-        context = build_loan_context(loan_obj.data)
+        context = build_loan_context(loan_obj.data, loan_obj)
 
         # QR kod: aynan shu sahifaning URL'iga
         doc_url = request.build_absolute_uri()
@@ -174,7 +197,7 @@ class LoanDocumentHTMLView(View):
             html_string = render_to_string(f"{template_name}.html", context)
 
             # PDF generatsiyasi (to'g'ridan-to'g'ri baytlarni qaytarish)
-            html = HTML(string=html_string, base_url=request.build_absolute_uri())
+            html = HTML(string=html_string, base_url="http://localhost:8000/")
             doc = html.render()  # render() alohida qilgan ma'qul
             pdf_bytes = doc.write_pdf()
 
@@ -186,51 +209,25 @@ class LoanDocumentHTMLView(View):
 
 class GeneratePDFView(APIView):
     def get(self, request, loan_id, template_name):
+        import traceback
         try:
             loan_obj = LoanApplication.objects.get(id=loan_id)
-            data = loan_obj.data
+            context = build_loan_context(loan_obj.data, loan_obj)
             
-            # 1. Shablon kutayotgan formatga ma'lumotlarni o'tkazamiz (Mapping)
-            # LoanWizard JSON strukturasi -> Shablon strukturasi
-            context = {
-                'loan': {
-                    'client': data.get('client_info', {}),
-                    'details': {
-                        'shartnoma_raqami': data.get('loan_details', {}).get('shartnoma_raqami'),
-                        'shartnoma_sanasi': data.get('loan_details', {}).get('shartnoma_sana'),
-                        'miqdori': data.get('loan_details', {}).get('kredit_summasi'),
-                        'miqdori_soz': data.get('loan_details', {}).get('kredit_summasi_soz'),
-                        'muddat_oy': data.get('loan_details', {}).get('kredit_muddati'),
-                        'foiz': data.get('loan_details', {}).get('foiz_stavkasi'),
-                        'foiz_soz': data.get('loan_details', {}).get('foiz_stavkasi_soz'),
-                    },
-                    'financial_info': data.get('financial', {})
-                },
-                'avto': data.get('collateral', {}).get('avto', {}),
-                'mulk': data.get('collateral', {}).get('mulk', {}),
-                'sugurta': data.get('collateral', {}).get('sugurta', {}),
-                'is_avto': data.get('collateral', {}).get('types', {}).get('avto', False),
-                'is_kochmas': data.get('collateral', {}).get('types', {}).get('mulk', False),
-                'is_sugurta_mavjud': data.get('collateral', {}).get('types', {}).get('sugurta', False),
-            }
-
             # 2. HTML renders
             html_string = render_to_string(f"{template_name}.html", context)
             
             # 3. PDF generation
-            html = HTML(string=html_string, base_url=request.build_absolute_uri())
+            html = HTML(string=html_string, base_url="http://localhost:8000/")
             result = html.write_pdf()
 
             # 4. Response qaytarish
-            response = HttpResponse(content_type='application/pdf')
+            response = HttpResponse(result, content_type='application/pdf')
             response['Content-Disposition'] = f'inline; filename="{template_name}_{loan_id}.pdf"'
-            response.write(result)
             return response
-
-        except LoanApplication.DoesNotExist:
-            return Response({"error": "Ariza topilmadi"}, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception:
+            traceback.print_exc()
+            raise
 
 @api_view(['GET'])
 def test_api(request):

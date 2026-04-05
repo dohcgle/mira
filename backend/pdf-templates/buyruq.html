@@ -1,149 +1,143 @@
-{% load humanize %}
+{% load static humanize %}
 <!DOCTYPE html>
 <html lang="uz">
-
 <head>
     <meta charset="UTF-8">
-    <title>Mikroqarz ajratish bo'yicha buyruq</title>
+    <title>BUYRUQ</title>
     <style>
         @page {
             size: A4;
-            margin: 1cm 1.5cm;
+            margin: 2cm;
         }
 
         body {
-            font-family: "Times New Roman", Times, serif;
-            font-size: 10pt;
-            line-height: 1.15;
-            text-align: justify;
+            font-family: 'Times New Roman', serif;
+            font-size: 11pt;
+            line-height: 1.3;
+            color: #000;
+            margin: 0;
+            padding: 0;
         }
 
         .header {
             text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header-title {
             font-weight: bold;
-            margin-bottom: 20px;
+            font-size: 12pt;
             text-transform: uppercase;
         }
 
-        .doc-number {
-            text-align: center;
-            margin-bottom: 30px;
+        .company-name {
             font-weight: bold;
+            font-size: 11pt;
+            margin-bottom: 20px;
         }
 
-        p {
-            text-indent: 1cm;
-            margin-bottom: 10px;
+        .document-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 14pt;
+            margin: 20px 0;
         }
 
-        .list-item {
-            margin-left: 1cm;
-            margin-bottom: 5px;
+        .date-place {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .content {
+            text-align: justify;
+            margin-bottom: 20px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
-            margin-bottom: 20px;
-            font-size: 10pt;
+            margin: 15px 0;
         }
 
-        th,
-        td {
-            border: 1px solid black;
+        th, td {
+            border: 1pt solid black;
             padding: 5px;
             text-align: center;
-            vertical-align: middle;
+            font-size: 9pt;
         }
 
-        th {
-            background-color: #f0f0f0;
+        .var {            
+            color: #8B0000; /* To'q qizil */
             font-weight: bold;
         }
 
-        td {
+        .bold {
+            font-weight: bold;
+        }
+
+        .footer {
+            margin-top: 30px;
+        }
+
+        .requisites td {
+            border: none;
             text-align: left;
+            padding: 5px 0;
         }
 
-        .signatures-box {
-            margin-top: 50px;
-            page-break-inside: avoid;
-        }
-
-        .signature-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .role-title {
-            width: 40%;
-            font-weight: bold;
-        }
-
-        .signer-name {
-            width: 40%;
-            text-align: right;
-            font-weight: bold;
-        }
-
-        .qr-code {
-            text-align: center;
-            width: 20%;
-        }
-
-        /* Django template o'zgaruvchilari uchun rang */
-        .var {
-            color: #900000;
-            font-weight: bold;
+        .list-item {
+            margin-left: 1.5cm;
+            text-indent: -1.5cm;
+            margin-bottom: 10px;
         }
     </style>
 </head>
-
 <body>
-
-    <div class="header">
-        «PULLOL BUSINESS MIKROMOLIYA TASHKILOTI» MChJ
+    <div class="company-name" style="text-align: center; margin-bottom: 20px;">
+        «<span class="var">{{ administrative.tashkilot_nomi }}</span>» MChJ Direktorining 
+        <span class="var">{{ loan_details.shartnoma_sana|default:"_____" }}</span> y.dagi 
+        <span class="var">№{{ loan_details.shartnoma_raqami|default:"_____" }}</span>-sonli buyrug‘i
     </div>
 
-    <div class="doc-number">
-        DIREKTORINING
-        <span class="var">{{ loan.details.shartnoma_sanasi|date:"d.m.Y" }}</span> yildagi
-        № <span class="var">{{ loan.details.shartnoma_raqami }}</span>-sonli BUYRUG‘I
+    <div class="content" style="margin-bottom: 20px;">
+        Men, <span class="var">{{ administrative.tashkilot_direktor_fish }}</span>, 
+        «<span class="var">{{ administrative.tashkilot_nomi }}</span>» nomidan 
+        <span class="var">{{ client_info.fish }}</span>ga quyidagi shartlarda Mikroqarz berishni buyuraman:
     </div>
-
-    <p>
-        Men, <strong><span class="var">{{ loan.financial_info.direktor_fish_inisiali }}</span></strong> «PULLOL BUSINESS
-        MIKROMOLIYA
-        TASHKILOTI» MChJ direktori,
-        jismoniy shaxs <strong><span class="var">{{ loan.client.fish }}</span></strong>ga quyidagi shartlarda
-        mikroqarz berishni buyuraman:
-    </p>
 
     <div class="list-item">
-        1. Mikroqarz summasi: <strong><span class="var">{{ loan.details.miqdori|intcomma }}</span>
-            (<span class="var">{{ loan.details.miqdori_soz }}</span>) so‘m.</strong>
+        1. Mikroqarz summasi: <strong><span class="var">{{ loan_details.kredit_summasi|intcomma }}</span>
+            (<span class="var">{{ loan_details.kredit_summasi_soz }}</span>) so‘m.</strong>
     </div>
     <div class="list-item">
-        2. Mikroqarz muddati: <strong><span class="var">{{ loan.details.muddat_oy }}</span> oy.</strong>
+        2. Mikroqarz muddati: <strong><span class="var">{{ loan_details.kredit_muddati }}</span> oy.</strong>
     </div>
     <div class="list-item">
         3. Mikroqarzdan foydalanganlik uchun foiz stavkasi: <strong>yillik
-            <span class="var">{{ loan.details.foiz }}</span>%
-            (<span class="var">{{ loan.details.foiz_soz }}</span>) foiz.</strong>
+            <span class="var">{{ loan_details.foiz_stavkasi }}</span>
+            (<span class="var">{{ loan_details.foiz_stavkasi_soz }}</span>) foiz.</strong>
     </div>
     <div class="list-item">
         4. Mikroqarz bo‘yicha asosiy qarz va foizlarni to‘lash:
-        <br>- mikroqarz shartnomasi bo‘yicha har oy differensial to‘lovlari amalga oshiriladi.
+        <ul style="list-style-type: none; margin: 5px 0 0 -20px;">
+            <li>- Mikroqarz shartnomasi bo‘yicha har oy <span class="var">{{ loan_details.grafik_turi }}</span> to‘lovlari amalga oshiriladi;</li>
+        </ul>
     </div>
 
-    {% if is_avto %}
+    {% if "avto" in collateral.types %}
     <p>
-        5. <strong><span class="var">{{ collateral.owner_client.fish }}</span></strong>ga tegishli
-        <strong><span class="var">{{ avto.nomi }}</span></strong> ko‘rinishidagi
-        transport vositasini quyidagi ma’lumotlarga muvofiq garovga qabul qilinsin:
+        5. <strong>
+            <span class="var">
+                {% if collateral.garov_egasi == 'self' %}
+                    {{ client_info.fish }}
+                {% else %}
+                    {{ collateral.owner.fish }}
+                {% endif %}
+            </span>
+        </strong>ga tegishli
+        <strong><span class="var">{{ collateral.avto.nomi }}</span></strong> ko‘rinishidagi
+        transport vositasini quyidagi ma’muotlarga muvofiq garovga qabul qilinsin:
     </p>
 
     <table>
@@ -158,35 +152,51 @@
         </thead>
         <tbody>
             <tr>
-                <td><span class="var">{{ avto.nomi }}</span></td>
-                <td><span class="var">{{ avto.kuzov_turi }}</span>,
-                    <span class="var">{{ avto.kuzov_raqami }}</span>
+                <td><span class="var">{{ collateral.avto.nomi }}</span></td>
+                <td><span class="var">{{ collateral.avto.kuzov_turi }}</span>,
+                    <span class="var">{{ collateral.avto.kuzov }}</span>
                 </td>
-                <td><span class="var">{{ avto.dvigatel }}</span>,
-                    <span class="var">{{ avto.shassi }}</span>
+                <td><span class="var">{{ collateral.avto.dvigatel }}</span>,
+                    <span class="var">{{ collateral.avto.shassi }}</span>
                 </td>
-                <td><span class="var">{{ avto.yil }}</span>,
-                    <span class="var">{{ avto.rang }}</span>
+                <td><span class="var">{{ collateral.avto.yil }}</span>,
+                    <span class="var">{{ collateral.avto.rang }}</span>
                 </td>
-                <td><span class="var">{{ avto.bahosi|intcomma }}</span><br>
-                    (<span class="var">{{ avto.bahosi_soz }}</span>)</td>
+                <td><span class="var">{{ collateral.avto.bahosi|intcomma }}</span><br>
+                    (<span class="var">{{ collateral.avto.bahosi_soz }}</span>)</td>
             </tr>
         </tbody>
     </table>
 
     <div class="list-item" style="font-size: 9pt;">
-        -* avtotransport egasi: <strong><span class="var">{{ collateral.owner_client.fish }}</span></strong><br>
-        -* texnik pasport: <strong><span class="var">{{ avto.texpasport }}</span></strong><br>
-        -* ro‘yxatdan o‘tgan manzili/garaj manzili: <strong><span class="var">{{ avto.manzil }}</span></strong><br>
-        -* davlat raqami: <strong><span class="var">{{ avto.davlat_raqami }}</span></strong>
+        -* avtotransport egasi: <strong>
+            <span class="var">
+                {% if collateral.garov_egasi == 'self' %}
+                    {{ client_info.fish }}
+                {% else %}
+                    {{ collateral.owner.fish }}
+                {% endif %}
+            </span>
+        </strong><br>
+        -* texnik pasport: <strong><span class="var">{{ collateral.avto.texpasport }}</span></strong><br>
+        -* ro‘yxatdan o‘tgan manzili/garaj manzili: <strong><span class="var">{{ collateral.avto.manzil }}</span></strong><br>
+        -* davlat raqami: <strong><span class="var">{{ collateral.avto.davlat_raqami }}</span></strong>
     </div>
     {% endif %}
 
-    {% if is_kochmas %}
+    {% if "mulk" in collateral.types %}
     <p>
-        {% if is_avto %}6{% else %}5{% endif %}. <strong><span class="var">{{ collateral.owner_client.fish
-                }}</span></strong>ga tegishli
-        <strong><span class="var">{{ mulk.nomi }}</span></strong> ko‘rinishidagi
+        {% if "avto" in collateral.types %}6{% else %}5{% endif %}. 
+        <strong>
+            <span class="var">
+                {% if collateral.garov_egasi == 'self' %}
+                    {{ client_info.fish }}
+                {% else %}
+                    {{ collateral.owner.fish }}
+                {% endif %}
+            </span>
+        </strong>ga tegishli
+        <strong><span class="var">{{ collateral.mulk.nomi }}</span></strong> ko‘rinishidagi
         ko‘chmas mulkni quyidagi ma’lumotlarga muvofiq garovga qabul qilinsin:
     </p>
 
@@ -203,31 +213,38 @@
         </thead>
         <tbody>
             <tr>
-                <td><span class="var">{{ mulk.nomi }}</span></td>
-                <td><span class="var">{{ mulk.yer_maydon|default:"—" }}</span></td>
-                <td><span class="var">{{ mulk.qurilish_maydon|default:"—" }}</span></td>
-                <td><span class="var">{{ mulk.umumiy_maydon|default:"—" }}</span></td>
-                <td><span class="var">{{ mulk.yashash_maydon|default:"—" }}</span></td>
-                <td><span class="var">{{ mulk.bahosi|intcomma }} <br>({{ mulk.bahosi_soz }})</span></td>
+                <td><span class="var">{{ collateral.mulk.nomi }}</span></td>
+                <td><span class="var">{{ collateral.mulk.umumiy_yer_maydoni|default:"—" }}</span></td>
+                <td><span class="var">{{ collateral.mulk.qurilish_osti_maydoni|default:"—" }}</span></td>
+                <td><span class="var">{{ collateral.mulk.umumiy_foydali_maydoni|default:"—" }}</span></td>
+                <td><span class="var">{{ collateral.mulk.yashash_maydoni|default:"—" }}</span></td>
+                <td><span class="var">{{ collateral.mulk.bahosi|intcomma }} <br>({{ collateral.mulk.bahosi_soz }})</span></td>
             </tr>
         </tbody>
     </table>
 
     <div style="font-size: 9pt; margin-left: 1.5cm; margin-bottom: 10px;">
-        -* ko‘chmas mulk egasi: <span class="var">{{ collateral.owner_client.fish }}</span><br>
-        -* reestr raqami: <span class="var">{{ mulk.reestr_raqami|default:collateral.reestr_number }}</span><br>
-        -* kadastr raqami: <span class="var">{{ mulk.kadastr_raqami }}</span><br>
-        -* manzil: <span class="var">{{ mulk.manzil }}</span><br>
-        -* umumiy maydoni: <span class="var">{{ mulk.umumiy_maydon }}</span> kv.m
+        -* ko‘chmas mulk egasi: <span class="var">
+            {% if collateral.garov_egasi == 'self' %}
+                {{ client_info.fish }}
+            {% else %}
+                {{ collateral.owner.fish }}
+            {% endif %}
+        </span><br>
+        -* reestr raqami: <span class="var">{{ collateral.mulk.reestr_raqami|default:"—" }}</span><br>
+        -* kadastr raqami: <span class="var">{{ collateral.mulk.kadastr_raqami }}</span><br>
+        -* manzil: <span class="var">{{ collateral.mulk.manzili }}</span><br>
+        -* umumiy maydoni: <span class="var">{{ collateral.mulk.umumiy_foydali_maydoni }}</span> kv.m
     </div>
     {% endif %}
 
-    {% if is_sugurta_mavjud %}
+    {% if "sugurta" in collateral.types %}
     <div class="list-item" style="margin-top: 15px;">
-        {% if is_avto and is_kochmas %}7{% elif is_avto or is_kochmas %}6{% else %}5{% endif %}. <strong>«<span
-                class="var">{{ sugurta.kompaniya }}</span>» АJ</strong> sug‘urta kompaniyasi bilan
-        Mikroqarz to'lamaslik xavfini <strong><span class="var">{{ sugurta.summa|intcomma }}</span> (<span
-                class="var">{{ sugurta.summa_soz }}</span>) so'm</strong> miqdoriga sug’urta qilish shartnomasi
+        {% if "avto" in collateral.types and "mulk" in collateral.types %}7{% elif "avto" in collateral.types or "mulk" in collateral.types %}6{% else %}5{% endif %}. 
+        <strong>
+            «<span class="var">{{ collateral.sugurta.kompaniya }}</span>» АJ</strong> sug‘urta kompaniyasi bilan
+        Mikroqarz to'lamaslik xavfini <strong><span class="var">{{ collateral.sugurta.summa|intcomma }}</span> (<span
+                class="var">{{ collateral.sugurta.summa_soz }}</span>) so'm</strong> miqdoriga sug’urta qilish shartnomasi
         tuzilsin.
     </div>
     {% endif %}
@@ -243,11 +260,10 @@
                 {% endif %}
             </td>
             <td style="border: none; width: 20%; text-align: right; vertical-align: middle;">
-                <strong><span class="var">{{ loan.financial_info.direktor_fish_inisiali }}</span></strong>
+                <strong><span class="var">{{ administrative.tashkilot_direktor_fish_inisiali }}</span></strong>
             </td>
         </tr>
     </table>
 
 </body>
-
 </html>

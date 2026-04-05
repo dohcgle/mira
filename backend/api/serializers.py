@@ -1,6 +1,12 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import LoanApplication
+from .models import LoanApplication, UserProfile
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ['filial', 'filial_fish', 'filial_fish_inisiali', 'tashkilot_nomi', 'tashkilot_direktor_fish', 'tashkilot_direktor_fish_inisiali']
+
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
