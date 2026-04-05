@@ -136,23 +136,9 @@ def build_loan_context(data, loan_obj=None):
         import re
         lines = grafik_matni.strip().split('\n')
         for line in lines:
-            line_str = line.strip()
-            if not line_str: continue
-            
-            # Agar qator "JAMI" yoki "Jami" bilan boshlansa
-            if "JAMI" in line_str.upper():
-                parts = re.split(r'\t+|\s{2,}', line_str)
-                # Jami qatorida odatda: [JAMI, balance, principal, interest, total]
-                # Yoki boshqa format bo'lsa, sonlarni qidiramiz
-                nums = [p for p in parts if re.search(r'\d', p)]
-                if len(nums) >= 3:
-                    loan_details['total_principal'] = nums[-3]
-                    loan_details['total_interest'] = nums[-2]
-                    loan_details['grand_total'] = nums[-1]
-                continue
-
+            if not line.strip(): continue
             # Tablar yoki 2+ bo'shliqlar bo'yicha bo'lish (Excel dan nusxalanganda tab bo'ladi)
-            parts = re.split(r'\t+|\s{2,}', line_str)
+            parts = re.split(r'\t+|\s{2,}', line.strip())
             # Kamida 5-6 ustun bo'lsa (№, Sana, Qoldiq, Asosiy, Foiz, Jami)
             if len(parts) >= 6:
                 # Agar barcha asosiy qiymatlar bo'sh, 0 yoki '-' bo'lsa, qatorni chetlab o'tamiz
@@ -189,8 +175,14 @@ class LoanDocumentHTMLView(View):
 
         context = build_loan_context(loan_obj.data, loan_obj)
 
-        # QR kod: aynan shu sahifaning URL'iga
+        # QR kod: aynan shu sahifaning URL'iga, lekin domenini https://epl.pullol.uz/ ga almashtiramiz
         doc_url = request.build_absolute_uri()
+        if 'localhost' in doc_url or '127.0.0.1' in doc_url:
+            doc_url = doc_url.replace(request.get_host(), 'epl.pullol.uz').replace('http://', 'https://')
+        else:
+            # Agar boshqa domen bo'lsa ham https ekanligiga ishonch hosil qilamiz
+            doc_url = doc_url.replace('http://', 'https://')
+            
         context['qr_manager'] = generate_qr_base64(doc_url)
 
         try:
@@ -213,6 +205,15 @@ class GeneratePDFView(APIView):
         try:
             loan_obj = LoanApplication.objects.get(id=loan_id)
             context = build_loan_context(loan_obj.data, loan_obj)
+            
+            # QR kod: aynan shu sahifaning URL'iga, lekin domenini https://epl.pullol.uz/ ga almashtiramiz
+            doc_url = request.build_absolute_uri()
+            if 'localhost' in doc_url or '127.0.0.1' in doc_url:
+                doc_url = doc_url.replace(request.get_host(), 'epl.pullol.uz').replace('http://', 'https://')
+            else:
+                doc_url = doc_url.replace('http://', 'https://')
+            
+            context['qr_manager'] = generate_qr_base64(doc_url)
             
             # 2. HTML renders
             html_string = render_to_string(f"{template_name}.html", context)

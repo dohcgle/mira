@@ -83,7 +83,7 @@ onMounted(fetchLoan)
                 </span>
 
                 <!-- MODERATOR BOSHQARUVI -->
-                <template v-if="role === 'moderator' && loan.status === 'new'">
+                <template v-if="role === 'moderator' && loan.status === 'new' && loan.operator_username !== authStore.username">
                     <button @click="updateStatus('approve')" class="px-6 py-3 rounded-2xl bg-green-500 text-white font-black text-xs uppercase tracking-widest shadow-lg shadow-green-200 hover:bg-green-600 transition-all">
                         ✓ Tasdiqlash
                     </button>
@@ -119,11 +119,9 @@ onMounted(fetchLoan)
                         <tbody>
                             <tr v-for="(val, label) in {
                                 'To\'liq F.I.SH': loan.data.client_info?.fish,
+                                'JSHSHIR raqami': loan.data.client_info?.jshshir,
                                 'Pasport seriya va raqami': loan.data.client_info?.pasport,
-                                'INN raqami': loan.data.client_info?.inn,
-                                'Telefon raqami': loan.data.client_info?.phone,
-                                'Doimiy ro\'yxatdan otan manzili': loan.data.client_info?.address,
-                                'Haqiqiy yashash manzili': loan.data.client_info?.lived_address
+                                'Tug\'ilgan sana': loan.data.client_info?.tugilgan_sana
                             }" :key="label" class="border-b border-slate-50 last:border-0">
                                 <td class="px-8 py-4 bg-slate-50/50 w-1/3 font-black text-slate-400 uppercase text-[10px] tracking-wider">{{ label }}</td>
                                 <td class="px-8 py-4 font-bold text-slate-700">{{ val || '—' }}</td>
@@ -143,10 +141,8 @@ onMounted(fetchLoan)
                             <tr v-for="(val, label) in {
                                 'Shartnoma raqami': loan.data.loan_details?.shartnoma_raqami,
                                 'Shartnoma sanasi': loan.data.loan_details?.shartnoma_sana,
-                                'Kredit summasi': loan.data.loan_details?.kredit_summasi?.toLocaleString() + ' so\'m',
-                                'Kredit muddati': loan.data.loan_details?.kredit_muddati + ' oy',
-                                'Yillik foiz stavkasi': loan.data.loan_details?.foiz_stavkasi + '%',
-                                'Kredit maqsadi': loan.data.loan_details?.kredit_maqsadi
+                                'Kredit summasi': loan.data.loan_details?.kredit_summasi + ' so\'m',
+                                'Kredit muddati': loan.data.loan_details?.kredit_muddati + ' oy'
                             }" :key="label" class="border-b border-slate-50 last:border-0">
                                 <td class="px-8 py-4 bg-slate-50/50 w-1/3 font-black text-slate-400 uppercase text-[10px] tracking-wider">{{ label }}</td>
                                 <td class="px-8 py-4 font-bold text-slate-700">{{ val || '—' }}</td>
@@ -155,32 +151,21 @@ onMounted(fetchLoan)
                     </table>
                 </div>
 
-                <!-- 3. Garov ta'minoti -->
+                <!-- 3. Garov ta'minoti detallari (Xulosa) -->
                 <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-sm border border-slate-100">
                     <div class="bg-slate-50 px-8 py-5 border-b border-slate-100 flex items-center justify-between">
-                        <h3 class="font-black text-slate-800 uppercase text-xs tracking-widest">Garov ta'minoti detallari</h3>
+                        <h3 class="font-black text-slate-800 uppercase text-xs tracking-widest">Garov ta'minoti ma'lumotlari</h3>
                         <span class="text-[10px] font-bold text-slate-400">3-BO'LIM</span>
                     </div>
-                    <!-- Garov turlari -->
-                    <div class="p-8 border-b border-slate-50 flex gap-3">
-                        <span v-for="type in (Array.isArray(loan.data.collateral?.types) ? loan.data.collateral.types : [])" :key="type"
-                            class="px-5 py-2 rounded-xl bg-indigo-50 text-indigo-600 font-black text-[10px] uppercase tracking-widest border border-indigo-100">
-                            {{ type === 'avto' ? '🚗 Avtomobil' : type === 'mulk' ? '🏠 Ko\'chmas mulk' : '🛡️ Sug\'urta' }}
-                        </span>
-                    </div>
-                    <!-- Alohida garov ma'lumotlari bo'lsa (Misol: Avto) -->
-                    <div v-if="loan.data.collateral?.avto" class="px-8 py-6 bg-slate-50/30">
-                        <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Avtomobil ma'lumotlari:</div>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                            <div v-for="(v, l) in {
-                                'Markasi': loan.data.collateral.avto.markasi,
-                                'Davlat raqami': loan.data.collateral.avto.dav_raqami,
-                                'Ishlab chiqarilgan yili': loan.data.collateral.avto.yil,
-                                'Dvigatel raqami': loan.data.collateral.avto.dvigatel_raqami
-                            }" :key="l">
-                                <p class="text-[9px] font-bold text-slate-400 uppercase">{{ l }}</p>
-                                <p class="font-bold text-slate-800 text-sm mt-1">{{ v || '—' }}</p>
-                            </div>
+                    <div class="p-8 space-y-6">
+                        <div class="flex gap-3">
+                            <span v-for="type in (Array.isArray(loan.data.collateral?.types) ? loan.data.collateral.types : [])" :key="type"
+                                class="px-5 py-2 rounded-xl bg-indigo-50 text-indigo-600 font-black text-[10px] uppercase tracking-widest border border-indigo-100">
+                                {{ type === 'avto' ? '🚗 Avtomobil' : type === 'mulk' ? '🏠 Ko\'chmas mulk' : '🛡️ Sug\'urta' }}
+                            </span>
+                        </div>
+                        <div class="text-xs font-bold text-slate-500 leading-relaxed">
+                            Batafsil ma'lumotlarni generatsiya qilingan hujjatlar orqali ko'rish mumkin.
                         </div>
                     </div>
                 </div>
@@ -189,9 +174,8 @@ onMounted(fetchLoan)
             <!-- O'ng panel: Hujjatlar va Tizim -->
             <div class="space-y-8">
                 
-                <!-- HUJJATLAR (Faol faqat approved bo'lganda yoki direktor bo'lganda) -->
+                <!-- HUJJATLAR -->
                 <div class="bg-indigo-900 rounded-[2.5rem] p-8 text-white shadow-2xl shadow-indigo-100 relative overflow-hidden">
-                    <!-- Bezak uchun sub'ektiv element -->
                     <div class="absolute -top-10 -right-10 w-32 h-32 bg-white/5 rounded-full blur-3xl"></div>
                     
                     <h3 class="text-xs font-black uppercase tracking-[0.2em] opacity-60 mb-8 flex items-center gap-3">
@@ -199,7 +183,7 @@ onMounted(fetchLoan)
                         Rasmiy hujjatlar
                     </h3>
                     
-                    <div v-if="loan.status === 'approved' || role === 'direktor'" class="space-y-3">
+                    <div v-if="loan.status === 'approved' || role === 'direktor' || role === 'moderator' || (role === 'operator' && loan.operator_username === authStore.username)" class="space-y-3">
                         <button v-for="(label, key) in {
                             'buyruq': 'Buyruq (HTML/PDF)',
                             'dalolatnoma': 'Dalolatnoma (HTML/PDF)',
@@ -218,16 +202,16 @@ onMounted(fetchLoan)
                     </div>
                 </div>
 
-                <!-- Foydalanuvchi ma'lumotlari -->
+                <!-- Ijrochi ma'lumotlari -->
                 <div class="bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-100">
                     <h3 class="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-6">Ijrochi ma'lumotlari</h3>
                     <div class="flex items-center gap-4 mb-6">
                         <div class="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center text-white font-black">
-                            {{ loan.operator_fish?.charAt(0) }}
+                            {{ loan.operator_username?.charAt(0).toUpperCase() }}
                         </div>
                         <div>
-                            <p class="font-black text-slate-800 text-sm">{{ loan.operator_fish }}</p>
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ loan.branch }}</p>
+                            <p class="font-black text-slate-800 text-sm uppercase">{{ loan.operator_username }}</p>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ loan.branch || 'Markaziy' }}</p>
                         </div>
                     </div>
                     <div class="pt-6 border-t border-slate-50 space-y-4">
@@ -246,7 +230,6 @@ onMounted(fetchLoan)
 </template>
 
 <style scoped>
-/* Rasmiy ko'rinish uchun qat'iy uslublar */
 table td {
     vertical-align: middle;
 }
