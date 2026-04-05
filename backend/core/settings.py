@@ -27,6 +27,19 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+# CSRF trusted origins for production
+CSRF_TRUSTED_ORIGINS = [
+    'https://epl.pullol.uz',
+    'http://epl.pullol.uz',
+    'http://localhost',
+    'http://127.0.0.1',
+]
+
+# When behind a proxy (like Nginx), tell Django to trust X-Forwarded-Proto header
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
+
 
 # Application definition
 
