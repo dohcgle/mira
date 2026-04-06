@@ -75,6 +75,14 @@ watch(() => authStore.isAuthenticated, (newVal) => {
       <nav class="flex-1 py-4 overflow-y-auto custom-scrollbar">
         <div class="px-3 mb-2 text-[9px] font-black text-slate-500 uppercase tracking-widest">Asosiy menyu</div>
         
+        <RouterLink 
+          to="/" 
+          class="nav-item group"
+          active-class="nav-item-active">
+          <span class="text-base">📊</span> 
+          <span>Bosh sahifa</span>
+        </RouterLink>
+
         <RouterLink v-if="authStore.userRole === 'operator'"
           to="/loan-wizard" 
           class="nav-item group"

@@ -13,7 +13,9 @@ const router = createRouter({
     },
     {
       path: '/',
-      redirect: '/loan-wizard'
+      name: 'home',
+      component: () => import('../views/Dashboard.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/contracts',

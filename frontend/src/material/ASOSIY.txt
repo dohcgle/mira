@@ -36,5 +36,5 @@ ROLE: direktor
 FIO: AKRAMOV RAVSHAN N
 Login: r.akramov
 Password: Pullol2026
-ROLE: direktor
+ROLE: moderator
 
