@@ -22,8 +22,8 @@ Password: Pullol2026
 ROLE: operator
 Filial: Urganch
 
-FIO: ORAZOV JASURBEK XASANOVICH
-Login: j.orazov
+FIO: DJUMANAZAROV BOBUR ANVAR O'G'LI
+Login: b.djumanazarov
 Password: Pullol2026
 ROLE: operator
 Filial: Tortko'l
@@ -31,10 +31,10 @@ Filial: Tortko'l
 FIO: MOMINOV BOTIR XASAN OGLI
 Login: b.mominov
 Password: Pullol2026
-ROLE: moderator
+ROLE: direktor
 
-FIO: OBIDOV ABDULLOH SHOKIR OGLI
-Login: a.obidov
+FIO: AKRAMOV RAVSHAN N
+Login: r.akramov
 Password: Pullol2026
 ROLE: direktor
 

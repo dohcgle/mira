@@ -104,7 +104,8 @@
         }
 
         .var {
-            color: #8B0000; /* To'q qizil */
+            color: #8B0000;
+            /* To'q qizil */
             font-weight: bold;
         }
 
@@ -158,7 +159,8 @@
     </div>
 
     <p style="text-indent: 0; margin-top: 10px;">
-        <strong>Birinchi masala yuzasidan:</strong> «<span class="var">{{ administrative.tashkilot_nomi }}</span>» MChJ mikromoliya tashkiloti
+        <strong>Birinchi masala yuzasidan:</strong> «<span class="var">{{ administrative.tashkilot_nomi }}</span>» MChJ
+        mikromoliya tashkiloti
         kredit bo‘yicha mas'ul xodimi
         <strong><span class="var">{{ client_info.fish }}</span></strong>ga
         <strong><span class="var">{{ loan_details.kredit_summasi|intcomma }}</span>
@@ -169,7 +171,8 @@
         <span class="var">
             {{ loan_details.kredit_turi }}
         </span> berish bo‘yicha
-        <strong><span class="var">{{ client_info.fish }}</span></strong>ning kredit arizasi va «<span class="var">{{ administrative.tashkilot_nomi }}</span>» MChJning xulosasi bilan ishtirokchilarni tanishtirdi.
+        <strong><span class="var">{{ client_info.fish }}</span></strong>ning kredit arizasi va «<span class="var">{{
+            administrative.tashkilot_nomi }}</span>» MChJning xulosasi bilan ishtirokchilarni tanishtirdi.
     </p>
 
     <p style="text-indent: 0; font-weight: bold; margin-bottom: 5px;">
@@ -180,12 +183,12 @@
     {% if "avto" in collateral.types %}
     <div class="list-item">
         1. Egalik huquqi <strong><span class="var">
-            {% if collateral.garov_egasi == 'self' %}
+                {% if collateral.garov_egasi == 'self' %}
                 {{ client_info.fish }}
-            {% else %}
+                {% else %}
                 {{ collateral.owner.fish }}
-            {% endif %}
-        </span></strong>ga
+                {% endif %}
+            </span></strong>ga
         tegishli bo‘lgan
         garovga olingan avtomobil markasi
         <strong><span class="var">{{ collateral.avto.nomi }}</span></strong>,
@@ -202,15 +205,19 @@
     {% if "mulk" in collateral.types %}
     <div class="list-item">
         Egalik huquqi <strong><span class="var">
-            {% if collateral.garov_egasi == 'self' %}
+                {% if collateral.garov_egasi == 'self' %}
                 {{ client_info.fish }}
-            {% else %}
+                {% else %}
                 {{ collateral.owner.fish }}
-            {% endif %}
-        </span></strong>ga tegishli bo‘lgan garovga olingan ko‘chmas mulk turi - <strong><span class="var">{{ collateral.mulk.nomi }}</span></strong>,
-        umumiy yer maydoni - <strong><span class="var">{{ collateral.mulk.umumiy_yer_maydoni|default:"—" }}</span></strong> m2,
-        foydali maydoni - <strong><span class="var">{{ collateral.mulk.umumiy_foydali_maydoni|default:"—" }}</span></strong> m2,
-        yashash maydoni - <strong><span class="var">{{ collateral.mulk.yashash_maydoni|default:"—" }}</span></strong> m2,
+                {% endif %}
+            </span></strong>ga tegishli bo‘lgan garovga olingan ko‘chmas mulk turi - <strong><span class="var">{{
+                collateral.mulk.nomi }}</span></strong>,
+        umumiy yer maydoni - <strong><span class="var">{{ collateral.mulk.umumiy_yer_maydoni|default:"—"
+                }}</span></strong> m2,
+        foydali maydoni - <strong><span class="var">{{ collateral.mulk.umumiy_foydali_maydoni|default:"—"
+                }}</span></strong> m2,
+        yashash maydoni - <strong><span class="var">{{ collateral.mulk.yashash_maydoni|default:"—" }}</span></strong>
+        m2,
         kadastr raqami - <strong><span class="var">{{ collateral.mulk.kadastr_raqami }}</span></strong>,
         manzili - <strong><span class="var">{{ collateral.mulk.manzili }}</span></strong>.
     </div>
@@ -227,7 +234,8 @@
     {% endif %}
 
     <p style="text-indent: 0; margin-top: 15px;">
-        Birinchi masala yuzasidan berilgan ma’lumotlarni muhokama qilib, Kredit qo‘mitasi a’zolariga taqdim etilgan zarur
+        Birinchi masala yuzasidan berilgan ma’lumotlarni muhokama qilib, Kredit qo‘mitasi a’zolariga taqdim etilgan
+        zarur
         hujjatlarni o‘rganib, majlisda ishtirok etgan Kredit qo‘mitasi a’zolarining taklif va mulohazalarini inobatga
         olgan holda <span class="var">{{ administrative.tashkilot_nomi }}</span> kredit qo‘mitasi
     </p>
@@ -264,13 +272,14 @@
         {% if "avto" in collateral.types %}
         <div class="list-item" style="text-indent: 0; margin-left: 1.5cm;">
             1. Garov - <strong><span class="var">
-            {% if collateral.garov_egasi == 'self' %}
-                {{ client_info.fish }}
-            {% else %}
-                {{ collateral.owner.fish }}
-            {% endif %}
-            </span></strong>ga mulk
-            huquqi asosida tegishli avtotransport vositasi <strong><span class="var">{{ collateral.avto.nomi }}</span></strong>:
+                    {% if collateral.garov_egasi == 'self' %}
+                    {{ client_info.fish }}
+                    {% else %}
+                    {{ collateral.owner.fish }}
+                    {% endif %}
+                </span></strong>ga mulk
+            huquqi asosida tegishli avtotransport vositasi <strong><span class="var">{{ collateral.avto.nomi
+                    }}</span></strong>:
         </div>
 
         <table>
@@ -285,13 +294,25 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><span class="var">{{ collateral.avto.nomi }}</span></td>
-                    <td><span class="var">{{ collateral.avto.kuzov_turi }}</span>, <br><span class="var">{{ collateral.avto.kuzov
-                            }}</span></td>
-                    <td><span class="var">{{ collateral.avto.dvigatel }}</span>, <br><span class="var">{{ collateral.avto.shassi }}</span>
+                    <td>
+                        <span class="var">{{ collateral.avto.nomi }}</span>
                     </td>
-                    <td><span class="var">{{ collateral.avto.yil }}</span>, <br><span class="var">{{ collateral.avto.rang }}</span></td>
-                    <td><span class="var">{{ collateral.avto.bahosi|intcomma }}</span> <br>({{ collateral.avto.bahosi_soz }})</td>
+                    <td>
+                        <span class="var">{{ collateral.avto.kuzov_turi }}</span>, <br>
+                        <span class="var">{{ collateral.avto.kuzov }}</span>
+                    </td>
+                    <td>
+                        <span class="var">{{ collateral.avto.dvigatel }}</span>, <br>
+                        <span class="var">{{ collateral.avto.shassi }}</span>
+                    </td>
+                    <td>
+                        <span class="var">{{ collateral.avto.yil }}</span>, <br>
+                        <span class="var">{{ collateral.avto.rang }}</span>
+                    </td>
+                    <td>
+                        <span class="var">{{ collateral.avto.bahosi|intcomma }}</span> <br>
+                        ({{ collateral.avto.bahosi_soz }})
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -300,12 +321,12 @@
         {% if "mulk" in collateral.types %}
         <div class="list-item" style="text-indent: 0; margin-left: 1.5cm;">
             Garov - <strong><span class="var">
-            {% if collateral.garov_egasi == 'self' %}
-                {{ client_info.fish }}
-            {% else %}
-                {{ collateral.owner.fish }}
-            {% endif %}
-            </span></strong>ga mulk
+                    {% if collateral.garov_egasi == 'self' %}
+                    {{ client_info.fish }}
+                    {% else %}
+                    {{ collateral.owner.fish }}
+                    {% endif %}
+                </span></strong>ga mulk
             huquqi asosida tegishli ko‘chmas mulk <strong><span class="var">{{ collateral.mulk.nomi }}</span></strong>:
         </div>
 
@@ -313,7 +334,7 @@
             <thead>
                 <tr>
                     <th>Nomi</th>
-                    <th>Umumiy yer maydoni (m2)</th>                    
+                    <th>Umumiy yer maydoni (m2)</th>
                     <th>Qurilish osti maydoni (m2)</th>
                     <th>Umumiy foydali maydoni (m2)</th>
                     <th>Yashash maydoni (m2)</th>
@@ -322,23 +343,36 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><span class="var">{{ collateral.mulk.nomi }}</span></td>
-                    <td><span class="var">{{ collateral.mulk.umumiy_yer_maydoni|default:"—" }}</span></td>
-                    <td><span class="var">{{ collateral.mulk.qurilish_osti_maydoni|default:"—" }}</span></td>
-                    <td><span class="var">{{ collateral.mulk.umumiy_foydali_maydoni|default:"—" }}</span></td>
-                    <td><span class="var">{{ collateral.mulk.yashash_maydoni|default:"—" }}</span></td>
-                    <td><span class="var">{{ collateral.mulk.bahosi|intcomma }} <br>({{ collateral.mulk.bahosi_soz }})</span></td>
+                    <td>
+                        <span class="var">{{ collateral.mulk.nomi }}</span>
+                    </td>
+                    <td>
+                        <span class="var">{{ collateral.mulk.umumiy_yer_maydoni|default:"—" }}</span>
+                    </td>
+                    <td>
+                        <span class="var">{{ collateral.mulk.qurilish_osti_maydoni|default:"—" }}</span>
+                    </td>
+                    <td>
+                        <span class="var">{{ collateral.mulk.umumiy_foydali_maydoni|default:"—" }}</span>
+                    </td>
+                    <td>
+                        <span class="var">{{ collateral.mulk.yashash_maydoni|default:"—" }}</span>
+                    </td>
+                    <td>
+                        <span class="var">{{ collateral.mulk.bahosi|intcomma }} <br>
+                            ({{ collateral.mulk.bahosi_soz }})</span>
+                    </td>
                 </tr>
             </tbody>
         </table>
 
         <div style="font-size: 9pt; margin-left: 1.5cm; margin-bottom: 10px;">
             -* ko‘chmas mulk egasi: <span class="var">
-            {% if collateral.garov_egasi == 'self' %}
+                {% if collateral.garov_egasi == 'self' %}
                 {{ client_info.fish }}
-            {% else %}
+                {% else %}
                 {{ collateral.owner.fish }}
-            {% endif %}
+                {% endif %}
             </span><br>
             -* reestr raqami: <span class="var">{{ collateral.mulk.reestr_raqami|default:"—" }}</span><br>
             -* kadastr raqami: <span class="var">{{ collateral.mulk.kadastr_raqami }}</span><br>
@@ -399,7 +433,8 @@
                     <img src="{{ qr_manager }}" class="qr-code">
                     {% endif %}
                 </td>
-                <td style="text-align: right;" class="bold"><span class="var">{{ administrative.tashkilot_direktor_fish_inisiali }}</span></td>
+                <td style="text-align: right;" class="bold"><span class="var">{{
+                        administrative.tashkilot_direktor_fish_inisiali }}</span></td>
             </tr>
         </table>
 
