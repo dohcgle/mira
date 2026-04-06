@@ -136,16 +136,26 @@ def build_loan_context(data, loan_obj=None):
         import re
         lines = grafik_matni.strip().split('\n')
         for line in lines:
-            if not line.strip(): continue
-            # Tablar yoki 2+ bo'shliqlar bo'yicha bo'lish (Excel dan nusxalanganda tab bo'ladi)
-            parts = re.split(r'\t+|\s{2,}', line.strip())
-            # Kamida 5-6 ustun bo'lsa (№, Sana, Qoldiq, Asosiy, Foiz, Jami)
+            line_strip = line.strip()
+            if not line_strip: continue
+            
+            # Tablar yoki 2+ bo'shliqlar bo'yicha bo'lish
+            parts = re.split(r'\t+|\s{2,}', line_strip)
+            
+            # Jami qatorini qidirish
+            if any(keyword in line_strip.upper() for keyword in ['JAMI', 'TOTAL', 'ИТОГО']):
+                nums = [p for p in parts if re.search(r'\d', p)]
+                if len(nums) >= 3:
+                    loan_details['total_principal'] = nums[-3]
+                    loan_details['total_interest'] = nums[-2]
+                    loan_details['grand_total'] = nums[-1]
+                continue
+
             if len(parts) >= 6:
                 # Agar barcha asosiy qiymatlar bo'sh, 0 yoki '-' bo'lsa, qatorni chetlab o'tamiz
                 vals = [p.strip().replace(' ', '').replace(',', '.') for p in parts[2:6]]
                 
                 def is_val_empty(v):
-                    # Tozalangan qiymatni tekshirish
                     v_clean = v.replace('-', '').replace('0.00', '').replace('0', '').strip()
                     return not v_clean or v == '-' or v == '-0.00'
 
@@ -161,7 +171,27 @@ def build_loan_context(data, loan_obj=None):
                         'total': parts[5]
                     })
     
+    # Agar jadvaldan JAMI topilmagan bo'lsa, hisoblaymiz
+    if not loan_details.get('total_principal') and schedule_data:
+        summ_p = 0
+        summ_i = 0
+        summ_g = 0
+        for row in schedule_data:
+            def clean_num(s):
+                return float(s.replace(' ', '').replace(',', '')) if s and any(c.isdigit() for c in s) else 0
+            summ_p += clean_num(row['principal'])
+            summ_i += clean_num(row['interest'])
+            summ_g += clean_num(row['total'])
+        
+        def format_uzb(val):
+            return "{:,.2f}".format(val).replace(',', ' ').replace('.', ',')
+            
+        loan_details['total_principal'] = format_uzb(summ_p)
+        loan_details['total_interest'] = format_uzb(summ_i)
+        loan_details['grand_total'] = format_uzb(summ_g)
+
     context['schedule_list'] = schedule_data
+    context['loan_details'] = loan_details
     return context
 
 

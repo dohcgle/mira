@@ -29,6 +29,7 @@ const formData = ref({
         pasport_berilgan_sana: '02.02.2017',
         pasport_amal_qilish: '02.02.2027',
         pasport_berilgan_joy: 'TOSHKENT SHAHAR ICHKI ISHLAR BOSHQARMASI',
+        manzil: 'Yunusobod tumani, Amir Temur kochasi, 1-uy, 21-xonadon',
         contacts: [
             { telefon: '', qarindoshlik: '' },
             { telefon: '', qarindoshlik: '' }
@@ -428,9 +429,16 @@ onMounted(async () => {
                             @input="formData.client_info.pasport_berilgan_joy = $event.target.value.toUpperCase()"
                             type="text" class="input-field">
                     </div>
+
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-10 mt-4 gap-6">
+                    <div class="col-span-4">
+                        <label class="block text-sm font-bold text-slate-600 mb-1">Manzili</label>
+                        <input v-model="formData.client_info.manzil" type="text" class="input-field">
+                    </div>
                 </div>
 
-                <!-- Bog'lanish uchun kontktlar -->
+                <!-- Bog'lanish uchun kontaktlar -->
                 <div class="grid grid-cols-1 md:grid-cols-2 mt-8 gap-8">
                     <div
                         class="bg-white p-10 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">

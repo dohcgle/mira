@@ -146,8 +146,8 @@
     <p>2.3. Mikroqarz Qarz oluvchi tomonidan ushbu Shartnomaning ajralmas qismi hisoblanadigan 1-ilovasida ko‘rsatilgan
         to‘lov jadvalida (bundan keyin - To‘lov jadvali) belgilangan miqdor, tartib va muddatlarda qaytariladi.</p>
     <p>2.4. Mikromoliya tashkiloti, mikroqarz berilgan vaqtdan boshlab, mikroqarz miqdorining qoldiq summasiga
-        <span class="var">{{ loan_details.foiz_stavkasi }}</span>% (<span class="var">{{ loan_details.foiz_stavkasi_soz
-            }}</span>) foiz
+        <span class="var">{{ loan_details.foiz_stavkasi }}</span>% 
+        (<span class="var">{{ loan_details.foiz_stavkasi_soz }}</span>) foiz
         yillik va yiliga 365/366 kunlik hisobidan foizlar hisoblaydi. To‘lov jadvaliga muvofiq asosiy qarz bo‘yicha
         navbatdagi to‘lov buzilgan hollarda, foiz stavkasi oshiriladi va Mikromoliya tashkiloti mikroqarzning muddati
         o‘tgan asosiy qarz summasiga yillik 155 (bir yuz ellik besh) foiz miqdorida foizlar hisoblaydi.
@@ -505,7 +505,7 @@
                 </td>
                 <td style="line-height: 1.6;">
                     <strong><span class="var">{{ client_info.fish }}</span></strong><br>
-                    Manzil: <span class="var">{{ client_info.pasport_berilgan_joy }}</span><br>
+                    Manzil: <span class="var">{{ client_info.manzil }}</span><br>
                     Pasport: <span class="var">{{ client_info.pasport }}</span>,
                     <span class="var">{{ client_info.pasport_berilgan_joy }}</span> tomonidan berilgan.<br>
 
