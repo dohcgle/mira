@@ -207,11 +207,10 @@
             {% else %}
                 {{ collateral.owner.fish }}
             {% endif %}
-        </span></strong>ga
-        tegishli bo‘lgan
-        garovga olingan ko‘chmas mulk turi -
-        <strong><span class="var">{{ collateral.mulk.nomi }}</span></strong>,
-        umumiy maydoni - <strong><span class="var">{{ collateral.mulk.umumiy_foydali_maydoni }}</span></strong> kv.m,
+        </span></strong>ga tegishli bo‘lgan garovga olingan ko‘chmas mulk turi - <strong><span class="var">{{ collateral.mulk.nomi }}</span></strong>,
+        umumiy yer maydoni - <strong><span class="var">{{ collateral.mulk.umumiy_yer_maydoni|default:"—" }}</span></strong> m2,
+        foydali maydoni - <strong><span class="var">{{ collateral.mulk.umumiy_foydali_maydoni|default:"—" }}</span></strong> m2,
+        yashash maydoni - <strong><span class="var">{{ collateral.mulk.yashash_maydoni|default:"—" }}</span></strong> m2,
         kadastr raqami - <strong><span class="var">{{ collateral.mulk.kadastr_raqami }}</span></strong>,
         manzili - <strong><span class="var">{{ collateral.mulk.manzili }}</span></strong>.
     </div>
@@ -228,9 +227,9 @@
     {% endif %}
 
     <p style="text-indent: 0; margin-top: 15px;">
-        Masala yuzasidan berilgan ma’lumotlarni muhokama qilib, Kredit qo‘mitasi a’zolariga taqdim etilgan zarur
+        Birinchi masala yuzasidan berilgan ma’lumotlarni muhokama qilib, Kredit qo‘mitasi a’zolariga taqdim etilgan zarur
         hujjatlarni o‘rganib, majlisda ishtirok etgan Kredit qo‘mitasi a’zolarining taklif va mulohazalarini inobatga
-        olgan holda «<span class="var">{{ administrative.tashkilot_nomi }}</span>» MChJ kredit qo‘mitasi
+        olgan holda <span class="var">{{ administrative.tashkilot_nomi }}</span> kredit qo‘mitasi
     </p>
 
     <div class="section-title">QAROR QILADI:</div>
@@ -344,7 +343,6 @@
             -* reestr raqami: <span class="var">{{ collateral.mulk.reestr_raqami|default:"—" }}</span><br>
             -* kadastr raqami: <span class="var">{{ collateral.mulk.kadastr_raqami }}</span><br>
             -* manzil: <span class="var">{{ collateral.mulk.manzili }}</span><br>
-            -* umumiy maydoni: <span class="var">{{ collateral.mulk.umumiy_foydali_maydoni }}</span> kv.m
         </div>
         {% endif %}
 

@@ -82,7 +82,8 @@
         }
 
         .var {
-            color: #8B0000; /* To'q qizil */
+            color: #8B0000;
+            /* To'q qizil */
             font-weight: bold;
         }
 
@@ -107,7 +108,8 @@
     </div>
 
     <p>
-        «<span class="var">{{ administrative.tashkilot_nomi }}</span>» MChJ, bundan buyon «Mikromoliya tashkiloti» deb nomlanuvchi,
+        «<span class="var">{{ administrative.tashkilot_nomi }}</span>» MChJ, bundan buyon «Mikromoliya tashkiloti» deb
+        nomlanuvchi,
         ishonchnoma asosida harakat qiluvchi <span class="var">{{ administrative.filial }}</span> filiali rahbari
         <span class="bold"><span class="var">{{ administrative.filial_fish }}</span></span> bir tomondan va
         o‘z manfaati yo‘lida hamda o‘z nomidan harakat qiluvchi O‘zbekiston Respublikasi fuqarosi
@@ -128,7 +130,7 @@
         </span>
         (<span class="var">{{ loan_details.kredit_summasi_soz }}</span>) bo‘lgan mikroqarzni
         <span class="var">{{ loan_details.shartnoma_sana }}</span> yildan
-        <span class="var">{{ loan_details.tugash_sanasi }}</span> yilgacha bo‘lgan muddatga
+        <span class="var">{{ loan_details.tugash_sana }}</span> yilgacha bo‘lgan muddatga
         naqd pul va/yoki o'tkazmasi shaklida ajratadi.
     </p>
     <p>
@@ -144,7 +146,8 @@
     <p>2.3. Mikroqarz Qarz oluvchi tomonidan ushbu Shartnomaning ajralmas qismi hisoblanadigan 1-ilovasida ko‘rsatilgan
         to‘lov jadvalida (bundan keyin - To‘lov jadvali) belgilangan miqdor, tartib va muddatlarda qaytariladi.</p>
     <p>2.4. Mikromoliya tashkiloti, mikroqarz berilgan vaqtdan boshlab, mikroqarz miqdorining qoldiq summasiga
-        <span class="var">{{ loan_details.foiz_stavkasi }}</span>% (<span class="var">{{ loan_details.foiz_stavkasi_soz }}</span>) foiz
+        <span class="var">{{ loan_details.foiz_stavkasi }}</span>% (<span class="var">{{ loan_details.foiz_stavkasi_soz
+            }}</span>) foiz
         yillik va yiliga 365/366 kunlik hisobidan foizlar hisoblaydi. To‘lov jadvaliga muvofiq asosiy qarz bo‘yicha
         navbatdagi to‘lov buzilgan hollarda, foiz stavkasi oshiriladi va Mikromoliya tashkiloti mikroqarzning muddati
         o‘tgan asosiy qarz summasiga yillik 155 (bir yuz ellik besh) foiz miqdorida foizlar hisoblaydi.
@@ -202,39 +205,41 @@
         {% endif %} tomonidan
         <span class="var">{{ loan_details.shartnoma_sana }}</span> y. da imzolangan 1-sonli garov predmeti qiymatini
         tasdiqlash dalolatnomasiga muvofiq
-        <span class="bold"><span class="var">{{ collateral.avto.rang }}</span></span> rangli, ishlab chiqarilgan yili – <span
-            class="var">{{ collateral.avto.yil }}</span> yil,
+        <span class="bold"><span class="var">{{ collateral.avto.rang }}</span></span> rangli, ishlab chiqarilgan yili –
+        <span class="var">{{ collateral.avto.yil }}</span> yil,
         dvigatel raqami <span class="var">{{ collateral.avto.dvigatel }}</span>,
         shassi - <span class="var">{{ collateral.avto.shassi }}</span>,
         kuzov turi - <span class="var">{{ collateral.avto.kuzov_turi }}</span>,
         kuzov raqami <span class="var">{{ collateral.avto.kuzov }}</span>,
-        davlat raqam belgisi <span class="bold"><span class="var">{{ collateral.avto.davlat_raqami }}</span></span> bo‘lgan
-        <span class="bold"><span class="var">{{ collateral.avto.nomi }}</span></span> rusumli avtomashinasi (bundan keyin
+        davlat raqam belgisi <span class="bold"><span class="var">{{ collateral.avto.davlat_raqami }}</span></span>
+        bo‘lgan
+        <span class="bold"><span class="var">{{ collateral.avto.nomi }}</span></span> rusumli avtomashinasi (bundan
+        keyin
         “Garov predmeti”), egalik huquqiga ega <span class="bold">
             <span class="var">
                 {% if collateral.garov_egasi == 'self' %}
-                    {{ client_info.fish }}
+                {{ client_info.fish }}
                 {% else %}
-                    {{ collateral.owner.fish }}
+                {{ collateral.owner.fish }}
                 {% endif %}
             </span></span> ga tegishli va kelishilgan garov qiymati
         <span class="var">{{ loan_details.shartnoma_sana }}</span> y. da imzolangan 1-sonli Garov predmeti qiymatini
         tasdiqlash dalolatnomasiga muvofiq
         <span class="bold"><span class="var">{{ collateral.avto.bahosi|intcomma }}</span>
-            (<span class="var">{{ collateral.avto.bahosi_soz }}</span>)</span> so‘mni tashkil qiladi. 
+            (<span class="var">{{ collateral.avto.bahosi_soz }}</span>)</span> so‘mni tashkil qiladi.
     </p>
     {% endif %}
 
     {% if "mulk" in collateral.types %}
-    <p>3.1.1.1. Mikromoliya tashkiloti va Qarz oluvchi
-        {% if collateral.garov_egasi != 'self' %}
-        va <span class="bold">
-            <span class="var">{{ collateral.owner.fish }}</span></span>
-        {% endif %} tomonidan
-        <span class="var">{{ loan_details.shartnoma_sana }}</span> y. da imzolangan 1-sonli Garov predmeti qiymatini
-        tasdiqlash dalolatnomasiga muvofiq
-        <span class="bold"><span class="var">{{ collateral.mulk.manzili }}</span></span> manzilida joylashgan, ko‘chmas mulk 
-        (bundan keyin “Garov predmeti”), egalik huquqiga ko‘ra <span class="bold">
+    <p>
+        3.1.1. Mikromoliya tashkiloti va Qarz oluvchi tomonidan <span class="var">{{ loan_details.shartnoma_sana }}</span> yilda imzolangan 1-sonli Garov predmeti qiymatini
+        tasdiqlash dalolatnomasiga muvofiq <span class="bold"><span class="var">{{ collateral.mulk.manzili }}</span></span> manzilida joylashgan,
+        umumiy yer maydoni - <span class="var">{{ collateral.mulk.umumiy_yer_maydoni|default:"—" }}</span> m2,
+        qurilish osti maydoni - <span class="var">{{ collateral.mulk.qurilish_osti_maydoni|default:"—" }}</span> m2,
+        umumiy foydali maydoni - <span class="var">{{ collateral.mulk.umumiy_foydali_maydoni|default:"—" }}</span> m2,
+        yashash maydoni - <span class="var">{{ collateral.mulk.yashash_maydoni|default:"—" }}</span> m2 bo‘lgan,
+        <strong><span class="var">{{ collateral.mulk.nomi }}</span></strong> ko‘chmas mulk (bundan keyin “Garov predmeti”),
+        egalik huquqiga ko‘ra <span class="bold">
             <span class="var">
                 {% if collateral.garov_egasi == 'self' %}
                     {{ client_info.fish }}
@@ -242,17 +247,19 @@
                     {{ collateral.owner.fish }}
                 {% endif %}
             </span></span> ga tegishli va kelishilgan garov qiymati
-        <span class="var">{{ loan_details.shartnoma_sana }}</span> y. da imzolangan 1-sonli Garov predmeti qiymatini
+        <span class="var">{{ loan_details.shartnoma_sana }}</span> yilda imzolangan 1-sonli Garov predmeti qiymatini
         tasdiqlash dalolatnomasiga muvofiq
         <span class="bold"><span class="var">{{ collateral.mulk.bahosi|intcomma }}</span>
             (<span class="var">{{ collateral.mulk.bahosi_soz }}</span>)</span> so‘mni tashkil qiladi.
+        Garovning aniq shartlari tegishli tarzda notarial tasdiqlangan garov shartnomasi bilan belgilangan.
     </p>
     {% endif %}
-    
+
     <p>Garovning aniq shartlari tegishli notarial/rasmiy rasmiylashtirilgan garov shartnomasi bilan belgilanadi.</p>
 
     {% if "sugurta" in collateral.types %}
-    <p>3.1.2. «<span class="var">{{ collateral.sugurta.kompaniya }}</span>» sug‘urta kompaniyasi tomonidan Mikroqarz to'lamaslik xavfini Mikroqarz summasiga nisbatan sug’urta qilish. 
+    <p>3.1.2. «<span class="var">{{ collateral.sugurta.kompaniya }}</span>» sug‘urta kompaniyasi tomonidan Mikroqarz
+        to'lamaslik xavfini Mikroqarz summasiga nisbatan sug’urta qilish.
         Sug‘urta summasi <span class="var">{{ collateral.sugurta.summa|intcomma }}</span>
         (<span class="var">{{ collateral.sugurta.summa_soz }}</span>) so'mni tashkil etadi.
     </p>
@@ -507,7 +514,7 @@
 
                     {% for contact in client_info.contacts %}
                     <span class="var">{{ contact.qarindoshlik }}:</span>
-                    <span class="var">{{ contact.telefon }}</span> 
+                    <span class="var">{{ contact.telefon }}</span>
                     <br>
                     {% endfor %}
 

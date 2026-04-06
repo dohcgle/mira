@@ -233,9 +233,11 @@
     {% endif %}
     {% if "mulk" in collateral.types %}
     <p>
-        Garov predmeti sifatida <span class="var">{{ collateral.mulk.nomi }}</span>, {% if collateral.garov_egasi !=
-        'self' %}3-tomonga{% else
-        %}2-tomonga{% endif %} egalik huquqi tegishli bo'lgan, quyidagi tafsilotlarga ega ko'chmas mulk taqdim etiladi:
+        Garov predmeti sifatida <span class="var">{{ collateral.mulk.nomi }}</span>,
+        {% if collateral.garov_egasi != 'self' %} 3-tomonga
+        {% else %}
+        2-tomonga
+        {% endif %} egalik huquqi tegishli bo'lgan, quyidagi tafsilotlarga ega ko'chmas mulk taqdim etiladi:
     </p>
 
     <table>
@@ -271,14 +273,16 @@
         -* reestr raqami: <span class="var">{{ collateral.mulk.reestr_raqami|default:"—" }}</span><br>
         -* kadastr raqami: <span class="var">{{ collateral.mulk.kadastr_raqami }}</span><br>
         -* manzil: <span class="var">{{ collateral.mulk.manzili }}</span><br>
-        -* umumiy maydoni: <span class="var">{{ collateral.mulk.umumiy_foydali_maydoni }}</span> kv.m
     </div>
 
     <p>
-        Tomonlar o’rtasida o’tkazilgan muzokaralar natijalariga ko‘ra, 2-tomon ta’minot sifatida quyidagi tafsilotlarga ega bo’lgan garov predmetini taqdim
-        etadi, 1-tomon esa ushbu garov predmetini <span class="var">{{ loan_details.shartnoma_sana }}</span> y.dan 
-        <span class="var">№{{ loan_details.shartnoma_raqami }}</span> Mikrokredit shartnomasi bo‘yicha berilgan Mikroqarz bo‘yicha 
-        <span class="var">{{ collateral.mulk.bahosi|intcomma }}</span> (<span class="var">{{ collateral.mulk.bahosi_soz }}</span>) so’m bo‘lgan kelishilgan garov qiymatida qabul qiladi:
+        Tomonlar o’rtasida o’tkazilgan muzokaralar natijalariga ko‘ra, 2-tomon ta’minot sifatida quyidagi tafsilotlarga
+        ega bo’lgan garov predmetini taqdim
+        etadi, 1-tomon esa ushbu garov predmetini <span class="var">{{ loan_details.shartnoma_sana }}</span> y.dan
+        <span class="var">№{{ loan_details.shartnoma_raqami }}</span> Mikrokredit shartnomasi bo‘yicha berilgan
+        Mikroqarz bo‘yicha
+        <span class="var">{{ collateral.mulk.bahosi|intcomma }}</span>
+        (<span class="var">{{ collateral.mulk.bahosi_soz }}</span>) so’m bo‘lgan kelishilgan garov qiymatida qabul qiladi:
     </p>
 
     <table>
@@ -306,17 +310,14 @@
     </table>
 
     <p>
-        Shu bilan birga, garov predmetining kelishilgan garov qiymati deganda ushbu mulk garov sifatida taqdim etilgan/qabul qilingan qiymati tushuniladi.
-        Shunday qilib, garov predmetining kelishilgan garov qiymati 
-        <span class="var">{{ collateral.mulk.bahosi|intcomma }}</span> (<span class="var">{{ collateral.mulk.bahosi_soz }}</span>) so‘mni tashkil etadi.
-    </p>   
+        Shu bilan birga, garov predmetining kelishilgan garov qiymati deganda ushbu mulk garov sifatida taqdim
+        etilgan/qabul qilingan qiymati tushuniladi.
+        Shunday qilib, garov predmetining kelishilgan garov qiymati
+        <span class="var">{{ collateral.mulk.bahosi|intcomma }}</span>
+        (<span class="var">{{ collateral.mulk.bahosi_soz }}</span>) so‘mni tashkil etadi.
+    </p>
 
-
-
-
-
-
-
+    {% endif %}
 
     <table class="footer-table">
         <!-- 1-TOMON: DIREKTOR YOKI FILIAL BOSHILIGI -->
@@ -370,8 +371,6 @@
         </tr>
         {% endif %}
     </table>
-
-
 
 </body>
 
