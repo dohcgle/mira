@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Kredit Qo'mitasi Qarori</title>
+    <title>Protokol</title>
     <style>
         @page {
             size: A4;
@@ -159,7 +159,10 @@
     </div>
 
     <p style="text-indent: 0; margin-top: 10px;">
-        <strong>Birinchi masala yuzasidan:</strong> «<span class="var">{{ administrative.tashkilot_nomi }}</span>» MChJ
+        <strong>Birinchi masala yuzasidan:</strong> 
+        <span class="var">
+            {{ administrative.tashkilot_nomi }}
+        </span> 
         mikromoliya tashkiloti
         kredit bo‘yicha mas'ul xodimi
         <strong><span class="var">{{ client_info.fish }}</span></strong>ga
@@ -171,8 +174,10 @@
         <span class="var">
             {{ loan_details.kredit_turi }}
         </span> berish bo‘yicha
-        <strong><span class="var">{{ client_info.fish }}</span></strong>ning kredit arizasi va «<span class="var">{{
-            administrative.tashkilot_nomi }}</span>» MChJning xulosasi bilan ishtirokchilarni tanishtirdi.
+        <strong><span class="var">{{ client_info.fish }}</span></strong>ning kredit arizasi va 
+        <span class="var">
+            {{ administrative.tashkilot_nomi }}
+        </span>ning xulosasi bilan ishtirokchilarni tanishtirdi.
     </p>
 
     <p style="text-indent: 0; font-weight: bold; margin-bottom: 5px;">
