@@ -38,3 +38,8 @@ Login: r.akramov
 Password: Pullol2026
 ROLE: moderator
 
+FIO: XAYRIYEV SHERALI BURIBOYEVICH
+Login: sh.xayriyev
+Password: Pullol2026
+ROLE: operator
+Filial: Navoiy

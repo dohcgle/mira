@@ -168,13 +168,13 @@
     </p>
     {% endif %}
 
-    {% if is_avto %}
+    {% if "avto" in collateral.types %}
     <p>
         Garov predmeti sifatida
         <strong>
-            <span class="var">{{ avto.nomi }}</span>
+            <span class="var">{{ collateral.avto.nomi }}</span>
         </strong>,
-        {% if garov_boshqa_shaxs %}3-tomonga{% else %}2-tomonga{% endif %} egalik huquqi
+        {% if collateral.garov_egasi != 'self' %}3-tomonga{% else %}2-tomonga{% endif %} egalik huquqi
         tegishli bo‘lgan,
         quyidagi tafsilotlarga ega avtotransport vositasi taqdim etiladi:
     </p>
@@ -190,18 +190,18 @@
         </thead>
         <tbody>
             <tr>
-                <td><span class="var">{{ avto.nomi }}</span></td>
+                <td><span class="var">{{ collateral.avto.nomi }}</span></td>
                 <td>
-                    <span class="var">Kuzov turi: {{ avto.kuzov_turi }}</span>, <br>
-                    <span class="var">Kuzov raqami: {{ avto.kuzov_raqami }}</span>
+                    <span class="var">Kuzov turi: {{ collateral.avto.kuzov_turi }}</span>, <br>
+                    <span class="var">Kuzov raqami: {{ collateral.avto.kuzov_raqami }}</span>
                 </td>
                 <td>
-                    <span class="var">Dvigatel: {{ avto.dvigatel }}</span>, <br>
-                    <span class="var">Shassi: {{ avto.shassi }}</span>
+                    <span class="var">Dvigatel: {{ collateral.avto.dvigatel }}</span>, <br>
+                    <span class="var">Shassi: {{ collateral.avto.shassi }}</span>
                 </td>
                 <td>
-                    <span class="var">Yili: {{ avto.yil }} yil</span>, <br>
-                    <span class="var">Rangi: {{ avto.rang }}</span>
+                    <span class="var">Yili: {{ collateral.avto.yil }} yil</span>, <br>
+                    <span class="var">Rangi: {{ collateral.avto.rang }}</span>
                 </td>
             </tr>
         </tbody>
@@ -228,8 +228,43 @@
         1-tomon esa ushbu garov predmetini
         <strong><span class="var">{{ collateral.avto.bahosi|intcomma }}</span>
             (<span class="var">{{ collateral.avto.bahosi_soz }}</span>) so‘m</strong> bo‘lgan kelishilgan garov
-        qiymatida qabul qiladi.
+        qiymatida qabul qiladi:
     </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nomi</th>
+                <th>Kuzov turi va kuzov raqami*</th>
+                <th>Dvigatel va shassi raqami*</th>
+                <th>Ishlab chiqarilgan yili va rangi*</th>
+                <th>Kelishilgan garov qiymati, so'm</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><span class="var">{{ collateral.avto.nomi }}</span></td>
+                <td>
+                    <span class="var">kuzov turi - {{ collateral.avto.kuzov_turi }}</span>, <br>
+                    <span class="var">kuzov raqami - {{ collateral.avto.kuzov_raqami }}</span>
+                </td>
+                <td>
+                    <span class="var">dvigatel raqami - {{ collateral.avto.dvigatel }}</span>, <br>
+                    <span class="var">shassi raqami - {{ collateral.avto.shassi }}</span>
+                </td>
+                <td>
+                    <span class="var">rangi - {{ collateral.avto.rang }}</span>, <br>
+                    <span class="var">ishlab chiqarilgan yili - {{ collateral.avto.yil }}</span>
+                </td>
+                <td>
+                    <span class="var">{{ collateral.avto.bahosi|intcomma }}</span> <br>
+                    (<span class="var">{{ collateral.avto.bahosi_soz }}</span>)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
     {% endif %}
     {% if "mulk" in collateral.types %}
     <p>

@@ -278,8 +278,12 @@
                     {{ collateral.owner.fish }}
                     {% endif %}
                 </span></strong>ga mulk
-            huquqi asosida tegishli avtotransport vositasi <strong><span class="var">{{ collateral.avto.nomi
-                    }}</span></strong>:
+            huquqi asosida tegishli avtotransport vositasi 
+            <strong>
+                <span class="var">
+                    {{ collateral.avto.nomi }}
+                </span>
+            </strong>:
         </div>
 
         <table>
@@ -433,8 +437,11 @@
                     <img src="{{ qr_manager }}" class="qr-code">
                     {% endif %}
                 </td>
-                <td style="text-align: right;" class="bold"><span class="var">{{
-                        administrative.tashkilot_direktor_fish_inisiali }}</span></td>
+                <td style="text-align: right;" class="bold">
+                    <span class="var">
+                        {{ administrative.tashkilot_direktor_fish_inisiali }}
+                    </span>
+                </td>
             </tr>
         </table>
 
