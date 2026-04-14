@@ -43,3 +43,9 @@ Login: sh.xayriyev
 Password: Pullol2026
 ROLE: operator
 Filial: Navoiy
+
+FIO: SHAMURATOV SULAYMAN MAXMUD ULI
+Login: s.shamuratov
+Password: Pullol2026
+ROLE: operator
+Filial: Nukus

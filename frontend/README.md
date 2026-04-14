@@ -42,3 +42,21 @@ npm run build
 ```sh
 npm run lint
 ```
+
+
+## 1. Serverda backup olish
+``` 
+docker exec -t mira-db pg_dump -U mira_user -F c mira_db > mira_dump.dump
+
+```
+
+## 2. Localda recovery qilish
+```
+# 1. Eski bazani o'chirish va ochish (xatoliklar bo'lmasligi uchun)
+docker exec -it mira-db psql -U mira_user -d postgres -c "DROP DATABASE mira_db;"
+docker exec -it mira-db psql -U mira_user -d postgres -c "CREATE DATABASE mira_db;"
+
+# 2. Ma'lumotlarni tiklash
+cat mira_dump.dump | docker exec -i mira-db pg_restore -U mira_user -d mira_db -v --no-owner --no-privileges
+
+```
