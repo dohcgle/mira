@@ -46,7 +46,7 @@ npm run lint
 
 ## 1. Serverda backup olish
 ``` 
-docker exec -t mira-db pg_dump -U mira_user -F c mira_db > mira_dump.dump
+docker exec -t mira-db pg_dump -U mira_user mira_db > mira_dump_$(date +%Y-%m-%d).sql
 
 ```
 
