@@ -317,7 +317,8 @@
         <span class="var">№{{ loan_details.shartnoma_raqami }}</span> Mikrokredit shartnomasi bo‘yicha berilgan
         Mikroqarz bo‘yicha
         <span class="var">{{ collateral.mulk.bahosi|intcomma }}</span>
-        (<span class="var">{{ collateral.mulk.bahosi_soz }}</span>) so’m bo‘lgan kelishilgan garov qiymatida qabul qiladi:
+        (<span class="var">{{ collateral.mulk.bahosi_soz }}</span>) so’m bo‘lgan kelishilgan garov qiymatida qabul
+        qiladi:
     </p>
 
     <table>
@@ -405,7 +406,26 @@
             </td>
         </tr>
         {% endif %}
+
+        {% if collateral.garov_egasi == 'ishonchnoma' %}
+        <tr>
+            <td colspan="3" style="padding-top: 20px; text-align: justify; font-size: 7pt;">
+                Mazkur dalolatnoma 3-tomon <strong><span class="var">{{ collateral.owner.fish }}</span></strong> nomidan
+                <span class="var">{{ collateral.ishonchnoma.notarius_berilgan_sana }}</span> yilda
+                <span class="var">{{ collateral.ishonchnoma.notarius_address }}</span> manzilida joylashgan notarius
+                <strong><span class="var">{{ collateral.ishonchnoma.notarius_fish }}</span></strong> tomonidan
+                <span class="var">{{ collateral.ishonchnoma.notarius_reestr_raqami }}</span>-son bilan reestrga olingan
+                ishonchnomaga asosan harakat qiluvchi <strong><span class="var">{{ client_info.fish }}</span></strong>
+                tomonidan
+                imzolanmoqda.
+            </td>
+        </tr>
+        {% endif %}
+
+
     </table>
+
+
 
 </body>
 
