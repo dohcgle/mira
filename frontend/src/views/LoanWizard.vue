@@ -802,7 +802,7 @@ onMounted(async () => {
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                             <div>
                                 <label class="block text-sm font-bold text-slate-600 mb-1">Kuzov raqami</label>
                                 <input v-model="formData.collateral.avto.kuzov"
@@ -821,6 +821,13 @@ onMounted(async () => {
                                     @input="formData.collateral.avto.shassi = $event.target.value.toUpperCase()"
                                     type="text" class="input-field">
                             </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-600 mb-1">Manzil</label>
+                                <input v-model="formData.collateral.avto.manzil"
+                                    @input="formData.collateral.avto.manzil = $event.target.value.toUpperCase()"
+                                    type="text" class="input-field">
+                            </div>
+
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">

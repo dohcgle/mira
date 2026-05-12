@@ -1,39 +1,39 @@
 {
     "financial": {
-        "ish_manzil": "",
-        "ish_lavozim": "",
-        "aloqa_uy_tel": "",
+        "ish_manzil": "BUXORO VILOYATI BUXORO SHAHRI",
+        "ish_lavozim": "YO`LOVCHILARNI TASHISH ",
+        "aloqa_uy_tel": "+998 91 449-28-85",
         "daromad_jami": "13 000 000",
-        "ish_muassasa": "",
+        "ish_muassasa": "O`ZINI O`ZI BAND QILGAN FUQARO",
         "xarajat_jami": "1 800 000",
-        "aloqa_ish_tel": "",
-        "majburiyatlar": "",
-        "daromad_asosiy": "10 000 000",
-        "daromad_boshqa": "3 000 000",
-        "xarajat_boshqa": "600 000",
-        "aloqa_uyali_tel": "",
-        "xarajat_oilaviy": "500 000",
+        "aloqa_ish_tel": "+998 91 402-84-64",
+        "majburiyatlar": "0",
+        "daromad_asosiy": "13 000 000",
+        "daromad_boshqa": 0,
+        "xarajat_boshqa": 0,
+        "aloqa_uyali_tel": "+998 77 477-14-77",
+        "xarajat_oilaviy": 0,
         "daromad_jami_soz": "o'n uch million",
-        "daromad_orindosh": 0,
+        "daromad_orindosh": "",
         "xarajat_jami_soz": "bir million sakkiz yuz ming",
-        "xarajat_kommunal": "700 000"
+        "xarajat_kommunal": 0
     },
     "collateral": {
         "avto": {
-            "yil": "2012",
-            "nomi": "CHEVROLET SPARK",
-            "rang": "OQ BELODIMCHATIY",
-            "kuzov": "XWBMF48NEDA509260",
-            "bahosi": "33 600 000",
+            "yil": "2014",
+            "nomi": "SPARK",
+            "rang": "OQ",
+            "kuzov": "XWBMF48NEEA549538",
+            "bahosi": "42 000 000",
             "manzil": "",
-            "shassi": "RAKAMSIZ",
+            "shassi": "RAQAMSIZ",
             "jshshir": "",
-            "dvigatel": "13122862B8JX0015",
-            "bahosi_soz": "o'ttiz uch million olti yuz ming",
+            "dvigatel": "B12D212140442B8JX0472",
+            "bahosi_soz": "qirq ikki million",
             "kuzov_turi": "Sedan",
-            "texpasport": "AAF4111449",
-            "davlat_raqami": "85X662HA",
-            "texpasport_sana": "24.02.2022"
+            "texpasport": "AAG2271681",
+            "davlat_raqami": "80O225HA",
+            "texpasport_sana": "05.09.2023"
         },
         "mulk": {
             "nomi": "",
@@ -50,16 +50,16 @@
             "umumiy_foydali_maydoni": ""
         },
         "owner": {
-            "fish": "NARZIYEV NORMUROD KENJA O'G'LI",
+            "fish": "KODIROV KAMOL MURTAZOYEVICH",
             "jinsi": "erkak",
-            "jshshir": "33001942330055",
-            "pasport": "AE7115782",
-            "telefon": "",
-            "fish_inisiali": "N.K.O.NARZIYEV",
-            "tugilgan_sana": "30.01.1994",
-            "pasport_amal_qilish": "19.04.2036",
-            "pasport_berilgan_joy": "NAVOIY VILOYATI QIZILTEPA TUMANI IIB",
-            "pasport_berilgan_sana": "20.04.2026"
+            "jshshir": "30609785300012",
+            "pasport": "AB9967210",
+            "telefon": "+998 91 402 84 64",
+            "fish_inisiali": "K.M.KODIROV",
+            "tugilgan_sana": "06.09.1978",
+            "pasport_amal_qilish": "21.06.2028",
+            "pasport_berilgan_joy": "BUXORO VILYATI KOGON TUMANI IIB",
+            "pasport_berilgan_sana": "22.06.2018"
         },
         "types": [
             "avto",
@@ -67,56 +67,56 @@
         ],
         "sugurta": {
             "summa": "14 000 000",
-            "kompaniya": "IMPEX INSURANCE",
+            "kompaniya": "АО СК \"IMPEX INSURANCE\"",
             "summa_soz": "o'n to'rt million"
         },
-        "garov_egasi": "ishonchnoma",
+        "garov_egasi": "self",
         "ishonchnoma": {
-            "notarius_fish": "SHARIPOV ZAFAR JO'RABOYEVICH",
-            "notarius_address": "BUXORO VILOYATI BUXORO SHAHRI ASHXOBOD KO'CHASI 1/3-UY",
-            "notarius_berilgan_sana": "21.04.2026",
-            "notarius_reestr_raqami": "202602386003451"
+            "notarius_fish": "",
+            "notarius_address": "",
+            "notarius_berilgan_sana": "",
+            "notarius_reestr_raqami": ""
         }
     },
     "client_info": {
-        "fish": "NURMURODOV RAHMONALI BOBOMUROD O'G'LI",
+        "fish": "KODIROV KAMOL MURTAZOYEVICH",
         "jinsi": "erkak",
-        "manzil": "BUXORO VILOYATI G'IJDUVON TUMANI SARMIJON MFY KULIJABBOR 681-UY",
-        "jshshir": "52110055310047",
-        "pasport": "AD0829705",
-        "telefon": "+998 94 828 53 59",
+        "manzil": "",
+        "jshshir": "30609785300012",
+        "pasport": "AB9967210",
+        "telefon": "+998 91 402 84 64",
         "contacts": [
             {
-                "telefon": "+998 93 838 00 35",
-                "qarindoshlik": "ota"
+                "telefon": "+998 91 449 28 85",
+                "qarindoshlik": "turmush_ortoq"
             },
             {
-                "telefon": "+998 93 460 24 21",
-                "qarindoshlik": "ona"
+                "telefon": "+998 77 477 14 77",
+                "qarindoshlik": "farzand"
             }
         ],
-        "fish_inisiali": "R.B.O.NURMURODOV",
-        "tugilgan_sana": "21.10.2005",
-        "pasport_amal_qilish": "18.11.2031",
-        "pasport_berilgan_joy": "IIV 6224",
-        "pasport_berilgan_sana": "19.11.2021"
+        "fish_inisiali": "K.M.KODIROV",
+        "tugilgan_sana": "06.09.1978",
+        "pasport_amal_qilish": "21.06.2028",
+        "pasport_berilgan_joy": "BUXORO VILYATI KOGON TUMANI IIB",
+        "pasport_berilgan_sana": "22.06.2018"
     },
     "loan_details": {
         "grafik_turi": "differensial",
         "kredit_turi": "mikroqarz",
-        "oylik_tolov": "2 488 000",
-        "tugash_sana": "21.04.2029",
-        "grafik_matni": "To'lov jadvali\t\t\t\t\t\n\t\t\t\t\t\n№\tTo'lov muddati\t Asosiy qarz qoldig'i  \tTo'lov miqdori, so'm\t\t\n\t\t\t asosiy qarz\tfoizlar\tjami*\n1\t15.05.2026\t 34 000 000,00 \t 944 444,44 \t 1 229 589,12 \t 2 174 033,56 \n2\t15.06.2026\t 33 055 555,56 \t 944 444,44 \t 1 544 101,94 \t 2 488 546,38 \n3\t15.07.2026\t 32 111 111,12 \t 944 444,44 \t 1 451 598,30 \t 2 396 042,74 \n4\t17.08.2026\t 31 166 666,68 \t 944 444,44 \t 1 549 794,51 \t 2 494 238,95 \n5\t15.09.2026\t 30 222 222,24 \t 944 444,44 \t 1 320 669,57 \t 2 265 114,01 \n6\t15.10.2026\t 29 277 777,80 \t 944 444,44 \t 1 323 516,00 \t 2 267 960,44 \n7\t16.11.2026\t 28 333 333,36 \t 944 444,44 \t 1 366 209,92 \t 2 310 654,36 \n8\t15.12.2026\t 27 388 888,92 \t 944 444,44 \t 1 196 856,97 \t 2 141 301,41 \n9\t15.01.2027\t 26 444 444,48 \t 944 444,44 \t 1 235 281,49 \t 2 179 725,93 \n10\t15.02.2027\t 25 500 000,04 \t 944 444,44 \t 1 191 164,46 \t 2 135 608,90 \n11\t15.03.2027\t 24 555 555,60 \t 944 444,44 \t 1 036 042,56 \t 1 980 487,00 \n12\t15.04.2027\t 23 611 111,16 \t 944 444,44 \t 1 102 930,09 \t 2 047 374,53 \n13\t17.05.2027\t 22 666 666,72 \t 944 444,44 \t 1 092 968,00 \t 2 037 412,44 \n14\t15.06.2027\t 21 722 222,28 \t 944 444,44 \t 949 231,48 \t 1 893 675,92 \n15\t15.07.2027\t 20 777 777,84 \t 944 444,44 \t 939 269,40 \t 1 883 713,84 \n16\t16.08.2027\t 19 833 333,40 \t 944 444,44 \t 956 346,88 \t 1 900 791,32 \n17\t15.09.2027\t 18 888 888,96 \t 944 444,44 \t 853 881,30 \t 1 798 325,74 \n18\t15.10.2027\t 17 944 444,52 \t 944 444,44 \t 811 187,10 \t 1 755 631,54 \n19\t15.11.2027\t 17 000 000,08 \t 944 444,44 \t 794 109,64 \t 1 738 554,08 \n20\t15.12.2027\t 16 055 555,64 \t 944 444,44 \t 725 799,00 \t 1 670 243,44 \n21\t17.01.2028\t 15 111 111,20 \t 944 444,44 \t 749 362,35 \t 1 693 806,79 \n22\t15.02.2028\t 14 166 666,76 \t 944 444,44 \t 617 372,59 \t 1 561 817,03 \n23\t15.03.2028\t 13 222 222,32 \t 944 444,44 \t 576 214,34 \t 1 520 658,78 \n24\t17.04.2028\t 12 277 777,88 \t 944 444,44 \t 608 856,93 \t 1 553 301,37 \n25\t15.05.2028\t 11 333 333,44 \t 944 444,44 \t 476 867,16 \t 1 421 311,60 \n26\t15.06.2028\t 10 388 889,00 \t 944 444,44 \t 483 963,32 \t 1 428 407,76 \n27\t17.07.2028\t 9 444 444,56 \t 944 444,44 \t 454 159,04 \t 1 398 603,48 \n28\t15.08.2028\t 8 500 000,12 \t 944 444,44 \t 370 423,38 \t 1 314 867,82 \n29\t15.09.2028\t 7 555 555,68 \t 944 444,44 \t 351 973,38 \t 1 296 417,82 \n30\t16.10.2028\t 6 611 111,24 \t 944 444,44 \t 307 976,63 \t 1 252 421,07 \n31\t15.11.2028\t 5 666 666,80 \t 944 444,44 \t 255 464,40 \t 1 199 908,84 \n32\t15.12.2028\t 4 722 222,36 \t 944 444,44 \t 212 887,20 \t 1 157 331,64 \n33\t15.01.2029\t 3 777 777,92 \t 944 444,44 \t 176 468,74 \t 1 120 913,18 \n34\t15.02.2029\t 2 833 333,48 \t 944 444,44 \t 132 351,71 \t 1 076 796,15 \n35\t15.03.2029\t 1 888 889,04 \t 944 444,44 \t 79 695,56 \t 1 024 140,00 \n36\t21.04.2029\t 944 444,60 \t 944 444,60 \t 52 656,18 \t 997 100,78 \n\tJAMI\t\t 34 000 000,00 \t 28 577 240,64 \t 62 577 240,64 \n",
+        "oylik_tolov": "2 934 000",
+        "tugash_sana": "12.05.2029",
+        "grafik_matni": "",
         "foiz_stavkasi": "55",
         "kredit_muddati": "36",
-        "kredit_summasi": "34 000 000",
-        "shartnoma_sana": "21.04.2026",
-        "boshlanish_sana": "21.04.2026",
-        "oylik_tolov_soz": "ikki million to'rt yuz sakson sakkiz ming",
-        "shartnoma_raqami": "373BR",
+        "kredit_summasi": "40 000 000",
+        "shartnoma_sana": "12.05.2026",
+        "boshlanish_sana": "12.05.2026",
+        "oylik_tolov_soz": "ikki million to'qqiz yuz o'ttiz to'rt ming",
+        "shartnoma_raqami": "455BR",
         "foiz_stavkasi_soz": "ellik besh",
         "kredit_muddati_soz": "o'ttiz olti",
-        "kredit_summasi_soz": "o'ttiz to'rt million"
+        "kredit_summasi_soz": "qirq million"
     },
     "administrative": {
         "filial": "Buxoro",
